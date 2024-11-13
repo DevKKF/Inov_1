@@ -235,13 +235,13 @@ JAZZMIN_SETTINGS = {
             }
         ],
         "production": [
-            {
-                "name": "Mouvements GRH",
-                "url": "prospects",
+            #{
+                #"name": "Mouvements GRH",
+                #"url": "prospects",
                 # "icon": "fa fa-user",
                 # "icon": "fa fa-list",
                 # "permissions": ["production.view_prospect"]
-            },
+            #},
             # {
             #    "name": "Assurance universelle",
             #    "url": "formules_universelles",

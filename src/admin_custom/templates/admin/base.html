@@ -192,7 +192,7 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item">
-                        <span class="nav-link_" id="page_title" style="display:inline">INOV {{ jazzmin_settings.version }} - <span class="badge" style="background:#272727;background_:var(--colorJauneOlea);color_:black;">{{ jazzmin_settings.environnement }}</span></span>
+                        <span class="nav-link_" id="page_title" style="display:inline">INOV {{ jazzmin_settings.version }} - <span class="badge" style="background:#272727;background_:var(--colorJauneInov);color_:black;">{{ jazzmin_settings.environnement }}</span></span>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -369,14 +369,14 @@
                                     {% for model in app.models %}
                                         <li class="nav-item">
                                             {% if model.url %}
-                                            <a href="{{ model.url }}" class="nav-link">
-                                                <i class="nav-icon {{ model.icon }}"></i> <p>{{ model.name }}</p>
-                                            </a>
-                                        {% else %}
-                                            <span class="nav-link disabled">
-                                                <i class="nav-icon {{ model.icon }}"></i> <p>{{ model.name }}</p>
-                                            </span>
-                                        {% endif %}
+                                                    <a href="{{ model.url }}" class="nav-link">
+                                                        <i class="nav-icon {{ model.icon }}"></i> <p>{{ model.name }}</p>
+                                                    </a>
+                                            {% else %}
+                                                <span class="nav-link disabled">
+                                                    <i class="nav-icon {{ model.icon }}"></i> <p>{{ model.name }}</p>
+                                                </span>
+                                            {% endif %}
                                         </li>
                                     {% endfor %}
                                 {% endfor %}
