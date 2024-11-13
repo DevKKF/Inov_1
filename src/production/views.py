@@ -6035,7 +6035,7 @@ def clients_datatable(request):
 def add_client(request):
     if request.method == 'POST':
 
-        groupe_international_id = request.POST.get('groupe_international_id')
+        #groupe_international_id = request.POST.get('groupe_international_id')
 
         type_personne_id = request.POST.get('type_personne_id')
         if type_personne_id == 2:
@@ -6075,11 +6075,11 @@ def add_client(request):
                                        created_by_id=request.user.id,
                                        #created_at=datetime.datetime.now(tz=timezone.utc),
                                        updated_at = timezone.now(),
-                                       langue_id=request.POST.get('langue_id'),
+                                       #langue_id=request.POST.get('langue_id'),
                                        pays_id=request.POST.get('pays_id'),
-                                       type_client_id=request.POST.get('type_client_id'),
+                                       #type_client_id=request.POST.get('type_client_id'),
                                        type_personne_id=type_personne_id,
-                                       groupe_international_id=groupe_international_id,
+                                       #groupe_international_id=groupe_international_id,
                                        )
 
         #TODO : nomenclature du code client a trouver
@@ -6108,7 +6108,7 @@ def add_client(request):
                 'nom': client_created.nom,
                 'prenoms': client_created.prenoms,
                 'date_naissance': client_created.date_naissance,
-                'type_client': client_created.type_client.libelle if client_created.type_client else "",
+                #'type_client': client_created.type_client.libelle if client_created.type_client else "",
                 'type_personne': client_created.type_personne.libelle if client_created.type_personne else "",
                 'ville': client_created.ville,
                 'created_at': client_created.created_at,

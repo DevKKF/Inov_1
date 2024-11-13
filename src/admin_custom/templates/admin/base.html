@@ -192,7 +192,7 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item">
-                        <span class="nav-link_" id="page_title" style="display:inline">OLEA SANTE 2.0 - <span class="badge" style="background:#272727;background_:var(--colorJauneOlea);color_:black;">{{ jazzmin_settings.environnement }}</span></span>
+                        <span class="nav-link_" id="page_title" style="display:inline">INOV {{ jazzmin_settings.version }} - <span class="badge" style="background:#272727;background_:var(--colorJauneOlea);color_:black;">{{ jazzmin_settings.environnement }}</span></span>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -253,7 +253,7 @@
 
                 <!-- changement de bureau pour les superusers -->
                 {% if user.is_superuser or user.is_admin_group %}
-                <li class="nav-item dropdown">
+                <!--li-- class="nav-item dropdown">
                     <a class="nav-link btn" data-toggle="dropdown" href="#" title="Changer de bureau">
                          <span class="current_bureau">{{ user.bureau }}  <i class="fas fa-home" aria-hidden="true"></i> </span>
                     </a>
@@ -267,7 +267,7 @@
                             {% endfor %}
                         </form>
                     </div>
-                </li>
+                </li-->
                 {% endif %}
                 <!-- changement de bureau pour les superusers -->
 
@@ -433,26 +433,7 @@
             {% if not is_popup %}
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-auto col-sm-3">
-                            <h1 class="m-0">{% block content_title %}{% endblock %}</h1>
-                        </div>
-                        <div class="col-auto col-sm-9" style="text-align:left;">
-                            {% block breadcrumbs %}
-                            <!--ol class="breadcrumb">
-                                <li><a href="{% url 'admin:index' %}"><i class="fa fa-dashboard"></i> Accueil</a> /</li>
-                                {% for breadcrumb in breadcrumbs %}
-                                    {% if breadcrumb.url %}
-                                        <li><a href="{{ breadcrumb.url }}">{{ breadcrumb.title }} /</a></li>
-                                    {% else %}
-                                        <li class="active">{{ breadcrumb.title }} /</li>
-                                    {% endif %}
-                                {% endfor %}
-                                <li>{{ title }}</li>
-                            </ol-->
-                            {% endblock %}
-                        </div>
-                    </div>
+                    {% block content_title %}{% endblock %}
                 </div>
             </div>
             {% endif %}

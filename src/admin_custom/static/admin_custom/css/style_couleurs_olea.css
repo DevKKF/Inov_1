@@ -1,11 +1,14 @@
 
 /****** SIDEBAR CSS ******/
 [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-treeview {
-    background-color: #ededed !important;
+    /*background-color: #ededed !important;*/
+    /*background-color: var(--couleur_olea) !important;*/
+    background-color: none !important;
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:hover {
-    background: linear-gradient(45deg, #C11B0E, #BB4127) !important;
+    /*background: linear-gradient(45deg, #C11B0E, #BB4127) !important;*/
+    background: linear-gradient(45deg, #F5AC3C, #F8AF3C) !important;
     color: #ffffff !important;
 }
 
@@ -14,32 +17,40 @@
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
-    background: linear-gradient(45deg, #C11B0E, #BB4127) !important;
+    /*background: linear-gradient(45deg, #C11B0E, #BB4127) !important;*/
+    background: linear-gradient(45deg, #F5AC3C, #F8AF3C) !important;
     color: #ffffff !important;
 }
 
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-    background: #007bff;
+    /*background: linear-gradient(45deg, #C11B0E, #BB4127);*/
+    background: linear-gradient(45deg, #F5AC3C, #F5AC3C);
     color: #fff !important;
+    /*box-shadow: 3px 3px 20px 0 rgb(123 31 162 / 50%);*/
+    box-shadow: 3px 3px 20px 0 rgb(255 240 173 / 20%);
 }
 
 [class*=sidebar-dark-] {
-    background-color: #343a40;
+    /*background-color: #ffffff;*/
+    background-color: #9C3D24;
 }
 
 [class*=sidebar-dark-] .sidebar a {
-    color: #454545;
+    /*color: #454545;*/
+    color: #eeeeee;
 }
 
 [class*=sidebar-dark-] .nav-header {
     background-color: inherit;
     color: #8e8e8e;
+    color: #ffffff;
 }
 
 [class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus {
     background-color: rgb(84 82 82 / 10%);
-    color: #454545;
+    /*color: #454545;*/
+    color: #eeeeee;
 }
 
 
@@ -55,6 +66,7 @@ img.custom-logo.brand-image {
 .user-profile {
     font-size: 2.4em;
     color: #d9d9d9;
+    color: #ffffff;
 }
 
 .accent-primary [class*=sidebar-dark-] .sidebar a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):hover {
@@ -63,10 +75,12 @@ img.custom-logo.brand-image {
 
 [class*=sidebar-dark] .user-panel {
     border-bottom: 1px solid #CCC;
+    border-bottom: 0px solid #eee;
 }
 
 [class*=sidebar-dark] .brand-link {
     border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #eee;
 }
 
 /****** SIDEBAR CSS END ******/
@@ -74,7 +88,9 @@ img.custom-logo.brand-image {
 /****** TOP BAR CSS ******/
 
 .navbar-white {
-    background: linear-gradient(45deg, #138496, #138496);
+    /*background: linear-gradient(45deg, #868686, #868686);*/
+    background: linear-gradient(45deg, #432918, #432918);
+    background: gray;
     color: #fff;
 }
 
@@ -291,12 +307,11 @@ table.table_v_middle th, table.table_v_middle td{
     overflow-x: hidden;
 }
 
-.dropzone .dz-preview .dz-details, .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark, .dropzone .dz-preview .dz-error-message, .dropzone .dz-preview .dz-progress
+.dropzone .dz-preview .dz-details
 {
   display:none;
   border:2px solid red;
 }
-
 /*fin page police*/
 
 
@@ -363,17 +378,6 @@ article .shimmer{
 
 .btn-details:hover{
     background: #F8AF3C;
-    color: white;
-}
-
-.btn-traiter_remb{
-    background: var(--blue);/*cyan*/
-    color: white;
-    font-weight: normal;
-}
-
-.btn-traiter_remb:hover{
-    background: var(--green);
     color: white;
 }
 
@@ -482,52 +486,33 @@ article .shimmer{
 }
 
 
-.card-header .btn-default:not(.btn-retour), .btn-paiement_comptable {
+.card-header .btn-default:not(.btn-retour) {
     background: #F8AF3C;
     color: white;
     color: #272727;
 }
 
-.card-header .btn-default:not(.btn-retour):hover, .btn-paiement_comptable:hover{
+.card-header .btn-default:not(.btn-retour):hover{
     background: #5FB7B1;
     color: white;
 }
 
 
 /*pour gérer les statuts*/
-.badge-actif, .badge-accorde, .badge-effectue, .badge-valide, .badge-paye, .badge-en-cours, .badge-reverse{
+.badge-actif, .badge-accorde, .badge-effectue{
   color: #fff;
   background-color: #28a745;
 }
 
-.badge-inactif, .badge-rejete, .badge-sorti, .badge-resilie{
+.badge-inactif, .badge-rejete{
   color: #fff;
   background-color: #dc3545;
 }
 
-.badge-suspendu{
-  color: #fff;
-  background-color: #ffc107;
-}
-
-.badge-ordonnance{
-  color: #fff;
-  background-color: #6c757d;
-}
-
 /*ou statut est vide, ...*/
-.badge-, .badge-en-attente, .badge-non-effectue, .badge-non-reverse{
+.badge-, .badge-en-attente, .badge-non-effectue{
   color: #fff;
   background-color: #6c757d;
-}
-
-.badge-sortie-en-cours{
-    background-color: #ffc107;
-    color: white;
-}
-.badge-entree-en-cours{
-    background-color: #007bff;
-    color: white;
 }
 
 .numero_carte{
@@ -555,4 +540,6 @@ article .shimmer{
     /*box-shadow: 3px 3px 20px 0 rgb(123 31 162 / 50%);*/
 }
 
-
+div.dataTables_processing>div:last-child>div {
+    background: rgb(248 175 60) !important;
+}
