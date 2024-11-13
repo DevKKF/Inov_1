@@ -253,10 +253,8 @@ table.table_v_middle th, table.table_v_middle td{
 
 
 :root {
-  --couleur_inov: #a75033;
   --couleur_olea: #a75033;
-  --colorPrimary: #17A2B8;
-  --colorJauneInov: #EFBF77;
+  --colorPrimary: #BB4127;
   --colorJauneOlea: #EFBF77;
   --colorAccent: gray;
 }
