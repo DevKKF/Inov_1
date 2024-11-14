@@ -68,85 +68,16 @@
 											</select>
 										</div>
 									</div>
-									<div class="form-group row champ_variable_client if_personne_physique">
-										<label class="col-sm-5 col-form-label">{{_('Date_de_naissance')}}<span class="required">*</span></label>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">{{_('Date_de_naissance')}}</label>
 										<div class="col-sm-7">
-											<input type="date" class="form-control" name="date_naissance" value="{{ client.date_naissance|date:'Y-m-d' }}" />
+											<input type="text" class="form-control" name="date_naissance" value="{{ client.date_naissance|date:'Y-m-d' }}" />
 										</div>
 									</div>
 
 								</div>
 								<div class="vl"></div>
 								<div class="col-md-5" style="border-left:0px;">
-
-									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">Groupe international <span class="required">*</span></label>
-										<div class="col-sm-7">
-											<select class="form-control" name="groupe_international_id" id="groupe_international_id" required>
-												<option value="">Choisir</option>
-												{% for groupe_international in groupes_internationaux %}
-												<option {% if groupe_international.id == client.groupe_international_id %} selected {% endif %} value="{{ groupe_international.id }}">{{ groupe_international.nom }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Type_client')}} <span class="required">*</span></label>
-										<div class="col-sm-7">
-											<select class="form-control tags-multiple" name="type_client_id" id="type_client_id" required>
-												<option value="">{{_('Choisir')}}</option>
-												{% for tc in types_clients %}
-												<option {% if tc.id == client.type_client_id %} selected {% endif %} value="{{ tc.id }}">{{ tc.libelle }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Langue')}} <span class="required">*</span></label>
-										<div class="col-sm-7">
-											<select class="form-control tags-multiple" name="langue_id" required>
-												<option value="">{{_('Choisir')}}</option>
-												{% for langue in langues %}
-												<option {% if langue.id == client.langue_id %} selected {% endif %} value="{{ langue.id }}">{{ langue.libelle }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-									<div class="form-group row" style="display:none;">
-										<label class="col-sm-5 col-form-label">{{_('Fichier_tarification')}} <span class="required"></span></label>
-										<div class="col-sm-7">
-											<input type="file" class="form-control" name="tarifile" id="tarifile"/>
-										</div>
-									</div>
-									<!--div class="form-group row">
-										<label class="col-sm-5 col-form-label">Gestionnaire<span class="required">*</span></label>
-										<div class="col-sm-7">
-											<select class="form-control tags-multiple" name="gestionnaire_id" required>
-												<option value="">Choisir</option>
-												{% for gestionnaire in gestionnaires %}
-												<option {% if gestionnaire.id == client.gestionnaire_id %} selected {% endif %} value="{{ gestionnaire.id }}">{{ gestionnaire.last_name }} {{ gestionnaire.first_name }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div-->
-
-									<div class="form-group row  ">
-										<label class="col-sm-5 col-form-label">{{_('Logo_du_client')}} </label>
-										<div class="col-sm-7">
-											<input type="file" class="form-control"  name="logo" id="logo_client"/>
-										</div>
-										{% if client.logo %}
-										<img src="{{client.logo.url}}" alt="" height="60px;">
-										{% endif %}
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class="tab-pane fade mt-3" id="coordonnee_modification" role="tabpanel" aria-labelledby="coordonnee-tab_modification">
-							<div class="row">
-								<div class="col-md-6">
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Pays')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
@@ -165,18 +96,6 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Adresse')}} </label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" name="adresse" value="{{ client.adresse|default_if_none:'' }}" />
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Adresse_postale')}} </label>
-										<div class="col-sm-7">
-											<input type="text" class="form-control" name="adresse_postale" value="{{ client.adresse_postale|default_if_none:'' }}" />
-										</div>
-									</div>
-									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Telephone_fixe')}} </label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="telephone_fixe" value="{{ client.telephone_fixe|default_if_none:'' }}"/>
@@ -186,6 +105,35 @@
 										<label class="col-sm-5 col-form-label">{{_('Telephone_mobile')}} </label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="telephone_mobile" value="{{ client.telephone_mobile|default_if_none:'' }}" />
+										</div>
+									</div>
+									<div class="form-group row  ">
+										<label class="col-sm-5 col-form-label">{{_('Logo_du_client')}} </label>
+										<div class="col-sm-7">
+											<input type="file" class="form-control"  name="logo" id="logo_client"/>
+										</div>
+										{% if client.logo %}
+										<img src="{{client.logo.url}}" alt="" height="60px;">
+										{% endif %}
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade mt-3" id="coordonnee_modification" role="tabpanel" aria-labelledby="coordonnee-tab_modification">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">{{_('Adresse')}} </label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="adresse" value="{{ client.adresse|default_if_none:'' }}" />
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">{{_('Adresse_postale')}} </label>
+										<div class="col-sm-7">
+											<input type="text" class="form-control" name="adresse_postale" value="{{ client.adresse_postale|default_if_none:'' }}" />
 										</div>
 									</div>
 								</div>
@@ -245,8 +193,8 @@
 
 				</div>
 				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-default" data-dismiss="modal">{{_('Retour')}}</button>
-					<button type="button" id="btn_save_modification_client" class="btn o-bg-primary">{{_('Valider_les_modifications')}}</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">{{_('Retour')}}</button>
+					<button type="button" id="btn_save_modification_client" class="btn btn-info">{{_('Valider_les_modifications')}}</button>
 				</div>
 			</div>
 			</form>

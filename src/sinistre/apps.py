@@ -4,4 +4,4 @@ from django.apps import AppConfig
 class SinistreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'sinistre'
-    verbose_name = 'Prises en charge'
+    verbose_name = 'Sinistre'

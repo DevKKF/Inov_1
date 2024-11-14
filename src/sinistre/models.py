@@ -58,8 +58,8 @@ class DossierSinistre(models.Model):
 
     class Meta:
         db_table = 'dossier_sinistre'
-        verbose_name = 'Prise en charges'
-        verbose_name_plural = 'Liste des prises en charge'
+        verbose_name = 'Sinistre'
+        verbose_name_plural = 'Liste des sinistres'
 
     @property
     def total_frais_reel(self):

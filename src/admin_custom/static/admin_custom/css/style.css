@@ -5,8 +5,8 @@
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:hover {
-    background: linear-gradient(45deg, #C11B0E, #BB4127) !important;
-    color: #ffffff !important;
+    background-color: #138496;
+    color: #fff !important;
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
@@ -14,8 +14,8 @@
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
-    background: linear-gradient(45deg, #C11B0E, #BB4127) !important;
-    color: #ffffff !important;
+    background-color: #138496;
+    color: #fff !important;
 }
 
 
@@ -132,12 +132,12 @@ img.custom-logo.brand-image {
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background-color: #C11B0E !important;
+    background-color: #138496 !important;
     color: white;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
-    background-color: #C11B0E;
+    background-color: #138496;
     color: #fff;
 }
 
@@ -151,11 +151,11 @@ img.custom-logo.brand-image {
 }
 
 .accent-primary .btn-link, .accent-primary .nav-tabs .nav-link, .accent-primary a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):not(.page-link):not(.btn) {
-    color: #922C15;
+    color: #138496;
 }
 
 .accent-primary .btn-link:hover, .accent-primary .nav-tabs .nav-link:hover, .accent-primary a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):not(.page-link):not(.btn):hover {
-    color: #922C15;
+    color: #066978;
 }
 
 .accent-primary .dropdown-item.active, .accent-primary .dropdown-item:active {
@@ -253,8 +253,8 @@ table.table_v_middle th, table.table_v_middle td{
 
 
 :root {
-  --couleur_olea: #a75033;
-  --colorPrimary: #BB4127;
+  --couleur_olea: #138496;
+  --colorPrimary: #138496;
   --colorJauneOlea: #EFBF77;
   --colorAccent: gray;
 }

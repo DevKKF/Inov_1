@@ -235,20 +235,6 @@ JAZZMIN_SETTINGS = {
             }
         ],
         "production": [
-            #{
-                #"name": "Mouvements GRH",
-                #"url": "prospects",
-                # "icon": "fa fa-user",
-                # "icon": "fa fa-list",
-                # "permissions": ["production.view_prospect"]
-            #},
-            # {
-            #    "name": "Assurance universelle",
-            #    "url": "formules_universelles",
-            #    # "icon": "fa fa-user",
-            #    # "icon": "fa fa-list",
-            #    #"permissions": ["production.view_prospect"]
-            # },
             {
                 "name": "Annuler une quittance",
                 "url": "annuler_quittance",
@@ -257,11 +243,6 @@ JAZZMIN_SETTINGS = {
             },
         ],
         "sinistre": [
-            {
-                "name": "Demandes Remb. app mobile",
-                "url": "admin:sinistre_demanderemboursementmobile_changelist",
-                "permissions": ["sinistre.can_do_saisie_gestionnaire"],
-            },
             {
                 "name": "Liste des dossiers traités",
                 "url": "dossierstraites",
@@ -353,12 +334,6 @@ JAZZMIN_SETTINGS = {
                 "icon": "fa fa-times",
                 "permissions": ["sinistre.can_do_annulation_facture"],
             },
-            # {
-            #     "name": "Annuler Bdx d'ordonnancement",
-            #     "url": "annuler_bordereau_ordonnancement",
-            #     "icon": "fa fa-times",
-            #     "permissions": ["sinistre.can_do_annulation_facture"]
-            # },
         ],
         "comptabilite": [
             {
