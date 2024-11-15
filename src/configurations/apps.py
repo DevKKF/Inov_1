@@ -8,4 +8,3 @@ class ConfigurationsConfig(AppConfig):
 
     def ready(self):
         import configurations.signals
-    

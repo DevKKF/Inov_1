@@ -9,7 +9,7 @@ from import_export.admin import ImportExportModelAdmin
 from django import forms
 from admin_custom.admin import custom_admin_site
 from configurations.forms import ActionLogForm, PermissionForm, RegroupementActeForm, SousRubriqueForm, StatExcelWsBobyForm, TarifForm, \
-    CompagnieAdminForm, BanqueAdminForm, SousRegroupementActeForm, ApporteurInternationalForm, GroupeInterForm
+    CompagnieAdminForm, BanqueAdminForm, SousRegroupementActeForm, GroupeInterForm
 from configurations.models import *
 from production.models import Quittance, SecteurActivite, TypeDocument, TarifPrestataireClient, Mouvement, Motif
 
@@ -852,11 +852,6 @@ class BackgroundQueryTaskAdmin(admin.ModelAdmin):
         js = ("configurations/js/custom.js",)
 
 
-class ApporteurInternationalAdmin(admin.ModelAdmin):
-    list_display = ('code', 'nom', 'pays')
-    form=ApporteurInternationalForm
-
-
 class GroupeInterAdmin(admin.ModelAdmin):
     list_display = ('code', 'nom', 'apporteur', 'status')
     form=GroupeInterForm
@@ -1068,12 +1063,12 @@ admin.site.register(TypePrestataire, TypePrestataireAdmin)
 admin.site.register(Specialite, SpecialiteAdmin)
 admin.site.register(Rubrique, RubiqueAdmin)
 admin.site.register(SousRubrique, SousRubriqueAdmin)
-admin.site.register(Acte, ActeAdmin)
+#admin.site.register(Acte, ActeAdmin)
 admin.site.register(RegroupementActe, RegroupementActeAdmin)
 admin.site.register(SousRegroupementActe, SousRegroupementActeAdmin)
 admin.site.register(TypeActe)
-admin.site.register(CategorieAffection)
-admin.site.register(Affection, AffectionAdmin)
+#admin.site.register(CategorieAffection)
+#admin.site.register(Affection, AffectionAdmin)
 admin.site.register(Profession, ProfessionAdmin)
 admin.site.register(Civilite)
 admin.site.register(TypeAssure)
@@ -1081,7 +1076,7 @@ admin.site.register(ReseauSoin, ReseauSoinAdmin)
 admin.site.register(TypeClient)
 #admin.site.register(SecteurActivite, SecteurActiviteAdmin)
 admin.site.register(TypePersonne)
-admin.site.register(Langue, LangueAdmin)
+#admin.site.register(Langue, LangueAdmin)
 admin.site.register(Pays, PaysAdmin)
 admin.site.register(Branche, BrancheAdmin)
 admin.site.register(Produit, ProduitAdmin)
@@ -1102,18 +1097,18 @@ admin.site.register(TypeTarif,)
 admin.site.register(Taxe, TaxeAdmin)
 admin.site.register(TypePriseencharge)
 admin.site.register(TypeEtablissement, TypeEtablissementAdmin)
-admin.site.register(CompagnieVeos, CompagnieVeosAdmin)
-admin.site.register(ClientVeos, ClientVeosAdmin)
-admin.site.register(PoliceVeos, PoliceVeosAdmin)
-admin.site.register(FormuleVeos, FormuleVeosAdmin)
-admin.site.register(AlimentVeos, AlimentVeosAdmin)
+#admin.site.register(CompagnieVeos, CompagnieVeosAdmin)
+#admin.site.register(ClientVeos, ClientVeosAdmin)
+#admin.site.register(PoliceVeos, PoliceVeosAdmin)
+#admin.site.register(FormuleVeos, FormuleVeosAdmin)
+#admin.site.register(AlimentVeos, AlimentVeosAdmin)
 #admin.site.register(AlimentBaobab, AlimentBaobabAdmin)
-admin.site.register(PrestataireVeos, PrestataireVeosAdmin)
-admin.site.register(UtilisateurVeos, UtilisateurVeosAdmin)
-admin.site.register(UtilisateurGrhVeos, UtilisateurGrhVeosAdmin)
+#admin.site.register(PrestataireVeos, PrestataireVeosAdmin)
+#admin.site.register(UtilisateurVeos, UtilisateurVeosAdmin)
+#admin.site.register(UtilisateurGrhVeos, UtilisateurGrhVeosAdmin)
 #admin.site.register(ChangementFormule, ChangementFormuleAdmin)
-admin.site.register(PrescripteurVeos, PrescripteurVeosAdmin)
-admin.site.register(SinistreVeos, SinistreVeosAdmin)
+#admin.site.register(PrescripteurVeos, PrescripteurVeosAdmin)
+#admin.site.register(SinistreVeos, SinistreVeosAdmin)
 admin.site.register(TypeGarant)
 admin.site.register(Tarif, TarifAdmin)
 admin.site.register(TypePrefinancement, TypePrefinancementAdmin)
@@ -1122,11 +1117,10 @@ admin.site.register(ModeCreation, ModeCreationAdmin)
 admin.site.register(TypeRemboursement, TypeRemboursementAdmin)
 admin.site.register(TypeQuittance, TypeQuittanceAdmin)
 #admin.site.register(Quittance)
-admin.site.register(QuittanceVeos, QuittanceVeosAdmin)
-admin.site.register(KeyValueData, KeyValueDataAdmin)
-admin.site.register(ApporteurVeos, ApporteurVeosAdmin)
+#admin.site.register(QuittanceVeos, QuittanceVeosAdmin)
+#admin.site.register(KeyValueData, KeyValueDataAdmin)
+#admin.site.register(ApporteurVeos, ApporteurVeosAdmin)
 admin.site.register(TypeApporteur)
-admin.site.register(ApporteurInternational, ApporteurInternationalAdmin)
 admin.site.register(CompteTresorerie)
 admin.site.register(BackgroundQueryTask, BackgroundQueryTaskAdmin)
 admin.site.register(ModelLettreCheque, ModelLettreChequeAdmin)
@@ -1135,15 +1129,15 @@ admin.site.register(Retenue, RetenueAdmin)
 
 admin.site.register(MailingList)
 
-admin.site.register(PeriodeVeos, PeriodeVeosAdmin)
-admin.site.register(ComptePrestataireVeos, ComptePrestataireVeosAdmin)
+#admin.site.register(PeriodeVeos, PeriodeVeosAdmin)
+#admin.site.register(ComptePrestataireVeos, ComptePrestataireVeosAdmin)
 
 
 #admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(ActeWaspito, ActeWaspitoAdmin)
-admin.site.register(GroupeInter, GroupeInterAdmin)
-admin.site.register(StatExcelWsBoby, StatExcelWsBobyAdmin)
+#admin.site.register(ActeWaspito, ActeWaspitoAdmin)
+#admin.site.register(GroupeInter, GroupeInterAdmin)
+#admin.site.register(StatExcelWsBoby, StatExcelWsBobyAdmin)
 
 #admin.site.register(MarqueVehicule) #à réactiver plus tard
 #admin.site.register(TypeCarosserie) #à réactiver plus tard
