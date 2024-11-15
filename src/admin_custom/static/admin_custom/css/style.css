@@ -20,7 +20,7 @@
 
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-    background: #007bff;
+    background: #138496;
     color: #fff !important;
 }
 
@@ -526,7 +526,7 @@ article .shimmer{
     color: white;
 }
 .badge-entree-en-cours{
-    background-color: #007bff;
+    background-color: #138496;
     color: white;
 }
 

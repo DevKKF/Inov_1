@@ -136,10 +136,6 @@
 											<input type="text" class="form-control" name="adresse_postale" value="{{ client.adresse_postale|default_if_none:'' }}" />
 										</div>
 									</div>
-								</div>
-								<div class="vl"></div>
-								<div class="col-md-5" style="border-left:0px;">
-
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Email')}} </label>
 										<div class="col-sm-7">
@@ -152,6 +148,10 @@
 											<input type="text" class="form-control" name="site_web" value="{{ client.site_web|default_if_none:'' }}" />
 										</div>
 									</div>
+								</div>
+								<div class="vl"></div>
+								<div class="col-md-5" style="border-left:0px;">
+
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Facebook')}} </label>
 										<div class="col-sm-7">
@@ -182,6 +182,16 @@
                                             </select>
                                         </div>
                                     </div>
+									<div class="form-group row">
+                                        <label class="col-sm-5 col-form-label">Secteur d'activité </label>
+                                        <div class="col-sm-7">
+                                            <select name="secteur_activite_id" id="" class="form-control tags-multiple">
+                                                <option value="">{{_('Choisir')}}</option>
+                                                {% for secteur_activite in secteurs_activite %}
+                                                <option value="{{secteur_activite.id}}">{{secteur_activite.libelle}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
 
 
 								</div>

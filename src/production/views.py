@@ -6047,13 +6047,13 @@ def add_client(request):
             sexe = ''
             date_naissance = None
 
-        secteur_activite_id = request.POST.get('secteur_activite_id')
-        secteur_activite = SecteurActivite.objects.filter(id=secteur_activite_id).first()
+        #secteur_activite_id = request.POST.get('secteur_activite_id')
+        #secteur_activite = SecteurActivite.objects.filter(id=secteur_activite_id).first()
 
         client_created = Client.objects.create(bureau_id=request.user.bureau.id,
                                        nom=request.POST.get('nom'),
                                        prenoms=prenoms,
-                                       secteur_activite=secteur_activite,
+                                       secteur_activite_id=request.POST.get('secteur_activite_id'),
                                        date_naissance=date_naissance,
                                        telephone_mobile=request.POST.get('telephone_mobile'),
                                        telephone_fixe=request.POST.get('telephone_fixe'),
