@@ -4,14 +4,14 @@
 			<form enctype="multipart/form-data" id="form_add_client" action="{% url 'add_client' %}" method="post">
 			{% csrf_token %}
 			<div class="modal-header">
-				<h4 class="modal-title">{{_('AJOUT_DUN_CLIENT')}}</h4>
+				<h4 class="modal-title f-bold">{{_("AJOUT D'UN CLIENT")}}</h4>
 				<button type="button" class="close"data-dismiss="modal"aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="alert  alert-dismissible fade show hidden" role="alert">
-				  <span class="message">{{_("TRAITEMENT EN COURS")}}</span>
+				  <span class="message">{{_('TRAITEMENT_EN_COURS')}}</span>
 				</div>
 				<div class="col-md-12 offset-0">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -25,7 +25,7 @@
 								<div class="col-md-6">
 
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Type personne")}} <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_("Type de personne")}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<select class="form-control" name="type_personne_id" id="type_personne_id" autocomplete="off" required>
 												<option value="">{{_('Choisir')}}</option>
@@ -36,7 +36,7 @@
 										</div>
 									</div>
 									<div class="form-group row champ_variable_client if_personne_physique">
-										<label class="col-sm-5 col-form-label">Civilité <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">Civilité <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<select class="form-control" name="civilite_id" autocomplete="off" required>
 												<option value="">{{_('Choisir')}}</option>
@@ -47,19 +47,19 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Nom')}} <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_('Nom')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="nom" value="" autocomplete="off" required/>
 										</div>
 									</div>
 									<div class="form-group row champ_variable_client if_personne_physique">
-										<label class="col-sm-5 col-form-label">{{_("Prénoms")}} <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_('Prenoms')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="prenoms" autocomplete="off" value=""/>
 										</div>
 									</div>
 									<div class="form-group row champ_variable_client if_personne_physique">
-										<label class="col-sm-5 col-form-label">{{_('Sexe')}} <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_('Sexe')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<select class="form-control" name="genre" id="genre" autocomplete="off">
 												<option value="">{{_('Choisir')}}</option>
@@ -68,21 +68,21 @@
 											</select>
 										</div>
 									</div>
-
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Date de naissance")}} </label>
+										<label class="col-sm-5 col-form-label">{{_("Date de naissance")}} <span class="required">*</span></label>
 										<div class="col-sm-7">
-											<input type="date" class="form-control" name="date_naissance" autocomplete="off" value=""/>
+											<input type="date" class="form-control" name="date_naissance" id="date_naissance" autocomplete="off" value=""/>
 										</div>
 									</div>
 
 								</div>
 								<div class="vl"></div>
 								<div class="col-md-5" style="border-left:0px;">
+
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Pays")}} <span class="text-danger">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_('Pays')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
-											<select class="form-control tags-multiple select2" name="pays_id" id="pays_id" autocomplete="off" required>
+											<select class="form-control tags-multiple" name="pays_id" id="pays_id" autocomplete="off" required>
 												<option value="">{{_('Choisir')}}</option>
 												{% for p in pays %}
 												<option value="{{ p.id }}">{{ p.nom }}</option>
@@ -90,7 +90,6 @@
 											</select>
 										</div>
 									</div>
-
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Ville')}} </label>
 										<div class="col-sm-7">
@@ -98,20 +97,20 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Téléphone fixe")}}</label>
+										<label class="col-sm-5 col-form-label">{{_("Tel fixe")}}</label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" name="telephone_fixe" autocomplete="off" value="" onkeypress="isInputNumber(event)">
+											<input type="number" class="form-control" name="telephone_fixe" autocomplete="off" value=""/>
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Téléphone mobile")}} </label>
+										<label class="col-sm-5 col-form-label">{{_("Tel mobile")}} </label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" name="telephone_mobile" autocomplete="off" value="" onkeypress="isInputNumber(event)">
+											<input type="number" class="form-control" name="telephone_mobile" autocomplete="off" value="" />
 										</div>
 									</div>
 
 									<div class="form-group row  ">
-										<label class="col-sm-5 col-form-label">{{_("Logo du client")}} <span class="required"></span></label>
+										<label class="col-sm-5 col-form-label">{{_('Logo')}} <span class="required"></span></label>
 										<div class="col-sm-7">
 											<input type="file" class="form-control" id="logo_client" name="logo_client"/>
 										</div>
@@ -131,13 +130,13 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_("Adresse postale")}}</label>
+										<label class="col-sm-5 col-form-label">{{_("Code postal")}}</label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="adresse_postale" autocomplete="off" value="" />
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Email')}} </label>
+										<label class="col-sm-5 col-form-label">{{_("E-mail")}} </label>
 										<div class="col-sm-7">
 											<input type="email" class="form-control" name="email" autocomplete="off" value="" />
 										</div>
@@ -191,22 +190,11 @@
 
 				</div>
 				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">{{_('Retour')}}</button>
-					<button type="button" id="btn_save_client" class="btn btn-info">{{_('Valider')}}</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> {{_('Retour')}}</button>
+					<button type="button" id="btn_save_client" class="btn btn-info"><i class="fa fa-check-circle"></i> {{_('Enregistrer')}}</button>
 				</div>
 			</div>
 			</form>
 		</div>
 	</div>
 </div>
-
-<script>
-	function isInputNumber(evt){
-
-		var ch = String.fromCharCode(evt.which);
-
-		if(!(/[0-9]/.test(ch))){
-			evt.preventDefault();
-		}
-	}
-</script>

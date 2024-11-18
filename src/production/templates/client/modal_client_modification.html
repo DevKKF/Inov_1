@@ -4,14 +4,14 @@
 			<form enctype="multipart/form-data" id="form_update_client" action="{% url 'modifier_client' client.id %}" method="post">
 			{% csrf_token %}
 			<div class="modal-header">
-				<h4 class="modal-title">{{_('MODIFICATION_DUN_CLIENT')}}</h4>
+				<h4 class="modal-title f-bold">{{_("MODIFICATION D'UN CLIENT")}}</h4>
 				<button type="button" class="close"data-dismiss="modal"aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="alert  alert-dismissible fade show hidden" role="alert">
-				  <span class="message">{{_('TRAITEMENT_EN_COURS')}}</span>
+				  <span class="message">{{_("TRAITEMENT EN COURS")}}</span>
 				</div>
 				<div class="col-md-12 offset-0">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -25,7 +25,7 @@
 								<div class="col-md-6">
 
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Type_personne')}} <span class="required">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_("Type de personne")}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<select class="form-control" name="type_personne_id" id="type_personne_id" required>
 												<option value="">{{_('Choisir')}}</option>
@@ -69,9 +69,9 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Date_de_naissance')}}</label>
+										<label class="col-sm-5 col-form-label">{{_("Date de naissance")}}</label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" name="date_naissance" value="{{ client.date_naissance|date:'Y-m-d' }}" />
+											<input type="date" class="form-control" name="date_naissance" id="date_naissance" value="{{ client.date_naissance|date:'Y-m-d' }}" />
 										</div>
 									</div>
 
@@ -89,6 +89,7 @@
 											</select>
 										</div>
 									</div>
+
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Ville')}} </label>
 										<div class="col-sm-7">
@@ -96,19 +97,19 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Telephone_fixe')}} </label>
+										<label class="col-sm-5 col-form-label">{{_("Tel fixe")}} </label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="telephone_fixe" value="{{ client.telephone_fixe|default_if_none:'' }}"/>
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Telephone_mobile')}} </label>
+										<label class="col-sm-5 col-form-label">{{_("Tel mobile")}} </label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="telephone_mobile" value="{{ client.telephone_mobile|default_if_none:'' }}" />
 										</div>
 									</div>
 									<div class="form-group row  ">
-										<label class="col-sm-5 col-form-label">{{_('Logo_du_client')}} </label>
+										<label class="col-sm-5 col-form-label">{{_('Logo')}} </label>
 										<div class="col-sm-7">
 											<input type="file" class="form-control"  name="logo" id="logo_client"/>
 										</div>
@@ -131,19 +132,19 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Adresse_postale')}} </label>
+										<label class="col-sm-5 col-form-label">{{_("Code postal")}} </label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="adresse_postale" value="{{ client.adresse_postale|default_if_none:'' }}" />
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Email')}} </label>
+										<label class="col-sm-5 col-form-label">{{_('E-mail')}} </label>
 										<div class="col-sm-7">
 											<input type="email" class="form-control" name="email" value="{{ client.email|default_if_none:'' }}" />
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Site_web')}}</label>
+										<label class="col-sm-5 col-form-label">{{_("Site web")}}</label>
 										<div class="col-sm-7">
 											<input type="text" class="form-control" name="site_web" value="{{ client.site_web|default_if_none:'' }}" />
 										</div>
@@ -172,7 +173,7 @@
 									</div>
 
 									<div class="form-group row">
-                                        <label class="col-sm-5 col-form-label">Secteur d'activité </label>
+                                        <label class="col-sm-5 col-form-label">{{_("Secteur d'activité")}}</label>
                                         <div class="col-sm-7">
                                             <select name="secteur_activite_id" id="" class="form-control tags-multiple">
                                                 <option value="">{{_('Choisir')}}</option>
@@ -182,19 +183,6 @@
                                             </select>
                                         </div>
                                     </div>
-									<div class="form-group row">
-                                        <label class="col-sm-5 col-form-label">Secteur d'activité </label>
-                                        <div class="col-sm-7">
-                                            <select name="secteur_activite_id" id="" class="form-control tags-multiple">
-                                                <option value="">{{_('Choisir')}}</option>
-                                                {% for secteur_activite in secteurs_activite %}
-                                                <option value="{{secteur_activite.id}}">{{secteur_activite.libelle}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-
-								</div>
 							</div>
 						</div>
 
@@ -203,8 +191,8 @@
 
 				</div>
 				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">{{_('Retour')}}</button>
-					<button type="button" id="btn_save_modification_client" class="btn btn-info">{{_('Valider_les_modifications')}}</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> {{_('Retour')}}</button>
+					<button type="button" id="btn_save_modification_client" class="btn btn-info"><i class="fa fa-check-circle"></i> {{_("Enregistrer les modifications")}}</button>
 				</div>
 			</div>
 			</form>

@@ -555,4 +555,10 @@ article .shimmer{
     /*box-shadow: 3px 3px 20px 0 rgb(123 31 162 / 50%);*/
 }
 
+.f-bold{
+    font-weight:bold;
+}
 
+.nav-tabs{
+    margin-top:-17px
+}
