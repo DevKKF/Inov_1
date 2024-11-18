@@ -265,11 +265,13 @@ $(document).ready(function () {
                 $('.if_personne_physique').show();
                 $('.if_personne_physique input').attr('required', 'required');
                 $('.if_personne_physique select').attr('required', 'required');
+                $('#date_naissance').closest('.form-group').show();
                 break;
             case 2://personne morale
                 $('.if_personne_morale').show();
                 $('.if_personne_morale input').attr('required', 'required');
                 $('.if_personne_morale select').attr('required', 'required');
+                $('#date_naissance').closest('.form-group').hide();
                 break;
         }
     }
@@ -294,11 +296,13 @@ $(document).ready(function () {
                 $('.if_personne_physique').show();
                 $('.if_personne_physique input').attr('required', 'required');
                 $('.if_personne_physique select').attr('required', 'required');
+                $('#date_naissance').closest('.form-group').show();
                 break;
             case 2://personne morale
                 $('.if_personne_morale').show();
                 $('.if_personne_morale input').attr('required', 'required');
                 $('.if_personne_morale select').attr('required', 'required');
+                $('#date_naissance').closest('.form-group').hide();
                 break;
         }
     }

@@ -9,6 +9,8 @@ from io import BytesIO
 from pprint import pprint
 import math
 from sqlite3 import Date
+from datetime import date
+from django.db.models import Max
 
 import openpyxl
 import pandas as pd
@@ -1474,7 +1476,7 @@ def modifier_police(request, police_id):
 def list_polices(request, client_id):
     # request.session['client_id_for_new_police'] = client_id
 
-    return redirect('/production/police/?client__id__exact=' + str(client_id))
+    return redirect('/production/clien/?client__id__exact=' + str(client_id))
 
 
 @login_required
@@ -2133,7 +2135,6 @@ class DetailsHistoriquePoliceView(TemplateView):
             **admin.site.each_context(self.request),
             "opts": self.model._meta,
         }
-
 
 
 
@@ -2854,7 +2855,7 @@ def police_sinistres_datatable(request, police_id):
     data = []
     for c in page_obj:
         detail_url = reverse('details_dossier_sinistre', args=[c.dossier_sinistre.id]) if c.dossier_sinistre else None # URL to the detail view# URL to the detail view
-        actions_html = f'<a href="{detail_url}"><span class="badge btn-sm btn-details rounded-pill"><i class="fa fa-eye"></i> {_("Détails")}</span></a>&nbsp;&nbsp;'
+        actions_html = f'<a href="{detail_url}" class="text-center"><span class="badge btn-sm btn-details rounded-pill"><i class="fa fa-eye"></i> {_("Détails")}</span></a>&nbsp;&nbsp;'
 
         statut_html = f'<span class="badge badge-{c.statut.lower()}">{c.statut}</span>'
 
@@ -5859,6 +5860,25 @@ def handle_uploaded_fichier(f, filename):
     return path_ot_db + '/' + filename
 
 
+# Générer le code pour le client
+def generate_client_code():
+    current_year = str(date.today().year)[-2:]
+
+    # Trouver le dernier code créé dans la base de données
+    last_code = Client.objects.aggregate(Max('code'))['code__max']
+
+    # Extraire le numéro incrémental du dernier code
+    if last_code:
+        last_number = int(last_code.split('-')[0])  # Ex: "0001-CL24" -> 0001
+        new_number = last_number + 1
+    else:
+        new_number = 1  # Si aucun code n'existe encore
+
+    # Formatage du nouveau numéro pour garder 4 chiffres
+    new_code = f"{str(new_number).zfill(4)}-CL{current_year}"
+
+    return new_code
+
 class ClientsView(TemplateView):
     permission_required = "production.view_clients"
     template_name = 'client/clients.html'
@@ -5910,43 +5930,12 @@ def clients_datatable(request):
     search_nom = request.GET.get('search_nom', '').strip()
     search_numero_police = request.GET.get('search_numero_police', '').strip()
     search_type_personne = request.GET.get('search_type_personne', '').strip()
-    search_numero_carte = request.GET.get('search_numero_carte', '').strip()
 
     aliment_trouve = False
     id_aliment_trouve = 0
 
     user = request.user
     queryset = Client.objects.filter(statut=Statut.ACTIF, bureau_id=user.bureau_id)
-
-
-    if search_numero_carte:
-        cartes = Carte.objects.filter(numero=search_numero_carte) #, aliment__bureau_id=user.bureau_id
-        if cartes:
-            carte = cartes[0]
-            aliment = carte.aliment
-
-            #derniere ligne aliment_formule
-            aliment_formule = aliment.formules.all().last()
-
-            if aliment_formule:
-                pprint("aliment_formule")
-                pprint(aliment_formule)
-                police = aliment_formule.formule.police if aliment_formule.formule else None
-                client = police.client if police else None
-                pprint(client)
-                queryset = Client.objects.filter(id=client.pk, bureau_id=user.bureau_id) if client else Client.objects.none()
-
-                if queryset:
-                    aliment_trouve = True
-                    id_aliment_trouve = aliment.id
-                    nom_aliment_trouve = f'{aliment.nom} {aliment.prenoms}'
-
-            else:
-                queryset = Client.objects.none()
-
-        else:
-            queryset = Client.objects.none()
-
 
     if search_nom:
         queryset = queryset.filter(
@@ -5993,8 +5982,8 @@ def clients_datatable(request):
 
         detail_url = reverse('client_details', args=[c.id])  # URL to the detail view
         modifier_client_url = reverse('modifier_client', args=[c.id])  # URL to the detail view
-        actions_html = f'<a href="{detail_url}"><span class="badge btn-sm btn-details rounded-pill"><i class="fa fa-eye"></i> {_("Détails")}</span></a>&nbsp;&nbsp;' \
-                       f'<span style="cursor:pointer;" class="btn_modifier_client badge btn-sm btn-modifier rounded-pill" data-client_id="{c.id}" data-model_name="client" data-modal_title="MODIFICATION D\'UN CLIENT" data-href="{modifier_client_url}"><i class="fas fa-edit"></i> {_("Modifier")}</span></a>&nbsp;&nbsp;'
+        actions_html = f'<a href="{detail_url}" class="text-center"><span class="badge btn-sm btn-details rounded-pill"><i class="fa fa-eye"></i> {_("Détails")}</span></a>&nbsp;&nbsp;' \
+                       f'<span style="cursor:pointer;" class="btn_modifier_client badge btn-sm btn-modifier rounded-pill text-center" data-client_id="{c.id}" data-model_name="client" data-modal_title="MODIFICATION D\'UN CLIENT" data-href="{modifier_client_url}"><i class="fas fa-edit"></i> {_("Modifier")}</span></a>&nbsp;&nbsp;'
 
         liste_numeros_polices = ''
         for p in c.polices.filter(statut_validite=StatutValidite.VALIDE):
@@ -6033,59 +6022,44 @@ def clients_datatable(request):
 # ajout d'avenant
 @login_required
 def add_client(request):
+    from datetime import datetime
     if request.method == 'POST':
 
-        #groupe_international_id = request.POST.get('groupe_international_id')
-
-        type_personne_id = request.POST.get('type_personne_id')
-        if type_personne_id == 2:
-            prenoms = request.POST.get('prenoms')
-            sexe = request.POST.get('sexe')
-            date_naissance = request.POST.get('date_naissance')
+        date_naissance = request.POST.get('date_naissance', None)
+        if date_naissance:
+            date_naissance = datetime.strptime(date_naissance, '%Y-%m-%d').date()
         else:
-            prenoms = ''
-            sexe = ''
             date_naissance = None
-
-        secteur_activite_id = request.POST.get('secteur_activite_id')
-        secteur_activite = SecteurActivite.objects.filter(id=secteur_activite_id).first()
 
         client_created = Client.objects.create(bureau_id=request.user.bureau.id,
                                        nom=request.POST.get('nom'),
-                                       prenoms=prenoms,
-                                       secteur_activite=secteur_activite,
+                                       prenoms=request.POST.get('prenoms'),
+                                       secteur_activite_id=request.POST.get('secteur_activite_id'),
                                        date_naissance=date_naissance,
                                        telephone_mobile=request.POST.get('telephone_mobile'),
                                        telephone_fixe=request.POST.get('telephone_fixe'),
                                        email=request.POST.get('email'),
-                                       longitude=request.POST.get('longitude'),
-                                       latitude=request.POST.get('latitude'),
                                        ville=request.POST.get('ville'),
                                        adresse_postale=request.POST.get('adresse_postale'),
                                        adresse=request.POST.get('adresse'),
-                                       gestionnaire_id=request.user.id, #request.POST.get('gestionnaire_id'),
+                                       gestionnaire_id=request.user.id,
                                        site_web=request.POST.get('site_web'),
                                        twitter=request.POST.get('twitter'),
                                        instagram=request.POST.get('instagram'),
                                        facebook=request.POST.get('facebook'),
-                                       ancienne_ref=request.POST.get('ancienne_ref'),
-                                       # fichier_tarification=tarification_file_upload_path,
                                        civilite_id=request.POST.get('civilite_id'),
-                                       sexe=sexe,
+                                       sexe=request.POST.get('sexe'),
                                        created_by_id=request.user.id,
                                        #created_at=datetime.datetime.now(tz=timezone.utc),
                                        updated_at = timezone.now(),
-                                       #langue_id=request.POST.get('langue_id'),
                                        pays_id=request.POST.get('pays_id'),
-                                       #type_client_id=request.POST.get('type_client_id'),
-                                       type_personne_id=type_personne_id,
-                                       #groupe_international_id=groupe_international_id,
+                                       type_personne_id=request.POST.get('type_personne_id'),
                                        )
 
         #TODO : nomenclature du code client a trouver
         code_bureau = request.user.bureau.code
         client_created.code_provisoire = str(code_bureau) + str(Date.today().year)[-2:] + '-' + str(client_created.pk).zfill(7) + '-CL'
-        client_created.code = str(code_bureau) + str(Date.today().year)[-2:] + '-' + str(client_created.pk).zfill(7) + '-CL'
+        client_created.code = generate_client_code()
         client_created.save()
 
         # Handle logo_client upload
@@ -6122,45 +6096,40 @@ def add_client(request):
 # modification d'un bénéficiaire
 @login_required
 def modifier_client(request, client_id):
+    from datetime import datetime
     client = Client.objects.get(id=client_id)
     file_upload_path = ''
 
     if request.method == 'POST':
         user = User.objects.get(id=request.user.id)
 
-        date_naissance = request.POST.get('date_naissance')
-
-        secteur_activite_id = request.POST.get('secteur_activite_id')
-        secteur_activite = SecteurActivite.objects.filter(id=secteur_activite_id).first()
+        date_naissance = request.POST.get('date_naissance', None)
+        if date_naissance:
+            date_naissance = datetime.strptime(date_naissance, '%Y-%m-%d').date()
+        else:
+            date_naissance = None
 
         Client.objects.filter(id=client_id).update(nom=request.POST.get('nom'),
                                                    prenoms=request.POST.get('prenoms'),
-                                                   secteur_activite = secteur_activite,
-                                                   date_naissance=date_naissance if date_naissance else None,
+                                                   secteur_activite_id=request.POST.get('secteur_activite_id'),
+                                                   date_naissance=date_naissance,
                                                    telephone_mobile=request.POST.get('telephone_mobile'),
                                                    telephone_fixe=request.POST.get('telephone_fixe'),
                                                    email=request.POST.get('email'),
-                                                   longitude=request.POST.get('longitude'),
-                                                   latitude=request.POST.get('latitude'),
                                                    ville=request.POST.get('ville'),
                                                    adresse_postale=request.POST.get('adresse_postale'),
                                                    adresse=request.POST.get('adresse'),
-                                                   #gestionnaire_id=request.POST.get('gestionnaire_id'),
                                                    site_web=request.POST.get('site_web'),
                                                    twitter=request.POST.get('twitter'),
                                                    instagram=request.POST.get('instagram'),
                                                    facebook=request.POST.get('facebook'),
                                                    ancienne_ref=request.POST.get('ancienne_ref'),
-                                                   # fichier_tarification=tarification_file_upload_path,
                                                    civilite_id=request.POST.get('civilite_id'),
                                                    sexe=request.POST.get('sexe'),
                                                    #updated_at=datetime.datetime.now(tz=timezone.utc),
                                                    updated_at = timezone.now(),
-                                                   langue_id=request.POST.get('langue_id'),
                                                    pays_id=request.POST.get('pays_id'),
-                                                   type_client_id=request.POST.get('type_client_id'),
                                                    type_personne_id=request.POST.get('type_personne_id'),
-                                                   groupe_international_id=request.POST.get('groupe_international_id'),
                                                    )
         print(request.POST)
         # Handle logo_client upload
@@ -6234,6 +6203,125 @@ def supprimer_client(request):
             }
 
         return JsonResponse(response)
+
+
+
+#Liste des polices du client
+@method_decorator(login_required, name='dispatch')
+class PoliceClientView(TemplateView):
+    permission_required = "production.view_clients"
+    template_name = 'client/client_polices.html'
+    model = Client
+
+    def get(self, request, client_id, *args, **kwargs):
+        context_original = self.get_context_data(**kwargs)
+
+
+        clients = Client.objects.filter(id=client_id, bureau=request.user.bureau)
+        if clients:
+            client = clients.first()
+
+            pprint(client.pays.devise)
+            polices = Police.objects.filter(client_id=client_id, statut=StatutPolice.ACTIF, statut_contrat='CONTRAT', statut_validite=StatutValidite.VALIDE).order_by('-id')
+
+            derniere_police = polices.first()
+            nouvelles_polices = [derniere_police] if derniere_police and not derniere_police.has_beneficiaires else []
+
+            #les anciennes polices qui un mouvement_police de résiliation
+            anciennes_polices = polices.filter(
+                id__in=MouvementPolice.objects.filter(
+                    mouvement__code="RESIL",
+                    statut_validite=StatutValidite.VALIDE,
+                    #date_effet__gte=datetime.datetime.now(tz=timezone.utc).date(),
+                    police_id__in=polices.values_list('id', flat=True)
+                ).values_list('police_id', flat=True)
+            )
+
+            statut_contrat = "CONTRAT"
+
+            quittances = []
+            for police in polices:
+                quittances_of_police = Quittance.objects.filter(police_id=police.id)
+                quittances.extend(quittances_of_police)
+
+            acomptes = Acompte.objects.filter(client_id=client_id)
+
+            filiales = Filiale.objects.filter(client_id=client_id)
+
+            documents = Document.objects.filter(client_id=client_id)
+
+            contacts = Contact.objects.filter(client_id=client_id)
+
+            pays = Pays.objects.all().order_by('nom')
+
+            types_documents = TypeDocument.objects.all().order_by('libelle')
+
+            types_prefinancements = TypePrefinancement.objects.filter(statut=Statut.ACTIF).order_by('libelle')
+
+            # pour la creation de police
+            branches = Branche.objects.filter(status=True).order_by('nom')
+            produits = Produit.objects.all().order_by('nom')
+            bureaux = Bureau.objects.all().order_by('nom')
+            utilisateurs = None  # User.objects.all().order_by('last_name')
+            apporteurs = Apporteur.objects.filter(status=True).order_by('nom')
+            tickets_moderateurs = TicketModerateur.objects.all().order_by('libelle')
+            fractionnements = Fractionnement.objects.all().order_by('libelle')
+            modes_reglements = ModeReglement.objects.all().order_by('libelle')
+            regularisations = Regularisation.objects.all().order_by('libelle')
+            compagnies = Compagnie.objects.filter(bureau=request.user.bureau, status=True).order_by('nom')
+            durees = Duree.objects.all().order_by('libelle')
+            devises = Devise.objects.filter(id=client.pays.devise_id).order_by('libelle')
+            taxes = Taxe.objects.all().order_by('libelle')
+            bureau_taxes = BureauTaxe.objects.filter(bureau_id=client.bureau_id)
+            bases_calculs = BaseCalcul.objects.all().order_by('libelle')
+            modes_calculs = ModeCalcul.objects.all().order_by('libelle')
+
+            placement_gestion = PlacementEtGestion
+            mode_renouvellement = ModeRenouvellement
+            calcul_tm = CalculTM
+            type_majoration_contrat = TypeMajorationContrat
+
+            bureaux = Bureau.objects.filter(id=request.user.bureau.id)
+
+            context_perso = {'client': client, 'contacts': contacts, 'polices': polices, 'quittances': quittances,
+                             'acomptes': acomptes,
+                             'filiales': filiales, 'documents': documents, 'types_documents': types_documents,
+                             'branches': branches, 'produits': produits, 'pays': pays,
+                             'compagnies': compagnies, 'durees': durees, 'placement_gestion': placement_gestion,
+                             'mode_renouvellement': mode_renouvellement, 'tickets_moderateurs': tickets_moderateurs,
+                             'calcul_tm': calcul_tm,
+                             'fractionnements': fractionnements, 'modes_reglements': modes_reglements,
+                             'regularisations': regularisations,
+                             'devises': devises, 'utilisateurs': utilisateurs, 'bureaux': bureaux, 'taxes': taxes,
+                             'bureau_taxes': bureau_taxes,
+                             'apporteurs': apporteurs, 'bases_calculs': bases_calculs,
+                             'type_majoration_contrat': type_majoration_contrat, 'modes_calculs': modes_calculs,
+                             'statut_contrat': statut_contrat,
+                             'types_prefinancements': types_prefinancements,
+                             'anciennes_polices': anciennes_polices,
+                             'nouvelles_polices': nouvelles_polices
+                             }
+
+            context = {**context_original, **context_perso}
+
+            return self.render_to_response(context)
+
+        else:
+            return redirect("clients")
+
+
+    def post(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+
+        pprint(kwargs)
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }
+
 
 
 # Test excel file exploid
