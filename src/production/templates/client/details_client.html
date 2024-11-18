@@ -182,19 +182,19 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Nom_complet')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Nom complet")}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.nom|default_if_none:"" }} {{ client.prenoms|default_if_none:"" }}</span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Code_client')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Code client")}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.code|default:client.code_provisoire|default:"" }}</span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Type_personne')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Type personne")}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.type_personne|default_if_none:"" }}</span>
                                 </div>
@@ -203,28 +203,29 @@
                         <div class="vl"></div>
                         <div class="col-md-5">
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Type')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Date de nais./création")}}</label>
                                 <div class="col-sm-7">
-                                <span class="form-control">{{ client.type_client|default_if_none:""  }}</span>
+                                <span class="form-control">{{ client.date_naissance|default_if_none:""  }}</span>
                                 </div>
                             </div>
 
 
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Secteur_activite')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Secteur activité")}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.secteur_activite|default_if_none:""  }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Date_de_enregistrement')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_("Date d'enregistrement")}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.created_at|date:'d/m/Y à H:i:s'|default_if_none:""  }}</span>
                                 </div>
                             </div>
                         </div>
                 </div>
+                <hr>
                 <h6 class="o-primary">{{_('COORDONNEES')}}</h6>
                 <hr>
                 <div class="row">
@@ -245,6 +246,12 @@
                             <label class="col-sm-5 col-form-label">{{_('Adresse')}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.adresse|default_if_none:"" }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label">{{_("Code postal")}}</label>
+                            <div class="col-sm-7">
+                            <span class="form-control">{{ client.adresse_postale|default_if_none:"" }}</span>
                             </div>
                         </div>
                     </div>
@@ -270,7 +277,8 @@
                         </div>
                     </div>
                 </div>
-                <h6 class="o-primary">{{_('RESEAUX_SOCIAUX')}}</h6>
+                <hr>
+                <h6 class="o-primary">{{_("RESEAUX SOCIAUX")}}</h6>
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
