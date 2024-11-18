@@ -1,5 +1,6 @@
-{% extends 'client/base.html' %}
+{% extends 'client/menu_client.html' %}
 {% load my_filters %}
+{% load i18n %}
 {% block extrastyle %}
   <style type="text/css">
     .vl {
@@ -53,24 +54,22 @@
 
   </style>
 {% endblock %}
-{% block content %}
-<div class="col-12 col-md-12" style="padding:0px;margin:0px;">
-  <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">
-          <span class="back_icon">
-            {% if request.META.HTTP_REFERER %}
-            <a href="{% url 'clients' %}" class="badge btn-sm btn-default btn-retour" style="color:black;font-weight:normal;" title="Retour à la liste des clients"><i class="fas fa-arrow-left"></i> {{_('Retour')}}</a>
-            {% endif %}
-          </span>
-          <span class="the_title" style="margin-left:10px;font-weight:bold;">
-             {{_('DETAILS_DU_CLIENT')}} {{ client.nom }} {{ client.prenom }}
-          </span>
-        </h3>
+{% block content_title %}
+    <div class="row mb-2">
+          <div class="col-sm-6">
+                <h1 class="m-0">Fiche des détails du client</h1>
+          </div>
+          <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                      <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+                      <li class="breadcrumb-item">Production</li>
+                      <li class="breadcrumb-item active"><a href="{% url 'clients' %}">Clients</a></li>
+                      <li class="breadcrumb-item active">Détails du client</li>
+                </ol>
+          </div>
     </div>
-  </div>
-</div>
-
+{% endblock %}
+{% block content %}
 
 <!--div class="col-md-12" class="accordion" id="accordionClient_removed">
   <div class="card offset" style="padding:0px;margin:0px;border:none;">
@@ -90,39 +89,9 @@
     <div class="card-body">
       <div class="row"-->
         <div class="col-12 col-md-12 order-2 order-md-1" id="accordionClient">
-          <div class="callout">
-            <!--h5>CLIENT</h5-->
-            <div class="row invoice-info">
-              <div class="col-sm-3 invoice-col">
-                <strong>{{_('Assure')}}</strong><br />
-                <span class="">{{ client.nom|default_if_none:"" }} {{ client.prenoms|default_if_none:"" }}</span>
-              </div>
-
-              <div class="col-sm-3 invoice-col">
-                <b>{{_('Code')}}</b><br />
-                <span class="">{{ client.code|default:client.code_provisoire|default:"" }}</span>
-              </div>
-
-              <div class="col-sm-3 invoice-col">
-                <strong>{{_('Type')}}</strong><br />
-                <span class="">{{ client.type_client|default_if_none:"" }}</span>
-              </div>
-
-              <div class="col-sm-3 invoice-col">
-                <strong>{{_('Secteur_activite')}}</strong><br />
-                <span class="">{{ client.secteur_activite|default_if_none:"" }}</span>
-              </div>
-
-              <div class="col-sm-3 invoice-col">
-                <b>{{_('Ville')}}</b><br />
-                <span class="">{{ client.ville|default_if_none:"" }}</span>
-              </div>
-
-            </div>
-          </div>
           <div class="row">
 
-            <div class="col-12 col-sm-4 col-md-2">
+            <!--<div class="col-12 col-sm-4 col-md-2">
 
                   <div class="info-box collapsed active" data-toggle="collapse0" id="btnInfosClient" href="#collapseInfosClient" aria-expanded="true">
                       <span class="info-box-icon text-white elevation-1"><i class="fas fa-user-tag"></i></span></span>
@@ -143,17 +112,6 @@
                   </div>
 
             </div>
-
-            <!--div class="col-12 col-sm-4 col-md-2">
-
-                  <div class="info-box collapsed" data-toggle="collapse0" id="btnQuittances" href="#collapseQuittances">
-                      <span class="info-box-icon text-white elevation-1"><i class="fas fa-file-invoice-dollar"></i></span></span>
-                      <div class="info-box-content">
-                        <span class="info-box-text">QUITTANCES</span>
-                      </div>
-                  </div>
-
-            </div-->
 
             <div class="col-12 col-sm-4 col-md-2">
 
@@ -199,7 +157,7 @@
                       </div>
                   </div>
 
-            </div>
+            </div> -->
 
             <div class="clearfix hidden-md-up"></div>
 
@@ -212,10 +170,11 @@
               <h4></h4>
               <div class="card shadow_OLD">
                 <div class="card-header">
-                    <h3 class="card-title">{{_('FICHE_CLIENT')}}</h3>
+                    <h3 class="card-title">{{_("FICHE DU CLIENT")}}</h3>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button>
-                        <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
+                        <span style="cursor:pointer;" class="btn btn-sm btn-primary btn_modifier_client" data-client_id="{{ client.id }}" data-model_name="client" data-modal_title="MODIFICATION D'UN CLIENT" data-href="{% url 'modifier_client' client.id %}"><i class="fas fa-edit"></i> {{_("Modifier client")}}</span>&nbsp;
+                        <!--button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
                     </div>
                 </div>
 
@@ -232,12 +191,6 @@
                                 <label class="col-sm-5 col-form-label">{{_('Code_client')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.code|default:client.code_provisoire|default:"" }}</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Langue')}}</label>
-                                <div class="col-sm-7">
-                                <span class="form-control">{{ client.langue|default_if_none:"" }}</span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -264,18 +217,6 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Gestionnaire')}}</label>
-                                <div class="col-sm-7">
-                                <span class="form-control">{%if client.created_by %} {{ client.created_by.last_name|default:client.created_by.first_name|default:""  }} {{ client.gestionnaire.first_name|default:""  }}{% endif %}</span>
-                                </div>
-                            </div>
-                            <!--div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Référent</label>
-                                <div class="col-sm-7">
-                                <span class="form-control">{{ client.referent|default:"" }}</span>
-                                </div>
-                            </div-->
                             <div class="form-group row">
                                 <label class="col-sm-5 col-form-label">{{_('Date_de_enregistrement')}}</label>
                                 <div class="col-sm-7">
@@ -310,19 +251,19 @@
                     <div class="vl"></div>
                     <div class="col-md-5">
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Telephone_fixe')}}</label>
+                            <label class="col-sm-5 col-form-label">{{_("Tel fixe")}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.telephone_fixe|default_if_none:"" }}</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Telephone_mobile')}}</label>
+                            <label class="col-sm-5 col-form-label">{{_("Tel mobile")}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.telephone_mobile|default_if_none:"" }}</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Email')}}</label>
+                            <label class="col-sm-5 col-form-label">{{_("E-mail")}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.email|default_if_none:"" }}</span>
                             </div>
@@ -334,7 +275,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Site_web')}} </label>
+                            <label class="col-sm-5 col-form-label">{{_("Site web")}} </label>
                             <div class="col-sm-7">
                             <span class="form-control"><a href="https://{{client.site_web}}" target="_blank"> {{ client.site_web|default_if_none:"" }}</a></span>
                             </div>

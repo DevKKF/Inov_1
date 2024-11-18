@@ -1476,7 +1476,7 @@ def modifier_police(request, police_id):
 def list_polices(request, client_id):
     # request.session['client_id_for_new_police'] = client_id
 
-    return redirect('/production/police/?client__id__exact=' + str(client_id))
+    return redirect('/production/clien/?client__id__exact=' + str(client_id))
 
 
 @login_required
@@ -2135,7 +2135,6 @@ class DetailsHistoriquePoliceView(TemplateView):
             **admin.site.each_context(self.request),
             "opts": self.model._meta,
         }
-
 
 
 
@@ -6204,6 +6203,125 @@ def supprimer_client(request):
             }
 
         return JsonResponse(response)
+
+
+
+#Liste des polices du client
+@method_decorator(login_required, name='dispatch')
+class PoliceClientView(TemplateView):
+    permission_required = "production.view_clients"
+    template_name = 'client/client_polices.html'
+    model = Client
+
+    def get(self, request, client_id, *args, **kwargs):
+        context_original = self.get_context_data(**kwargs)
+
+
+        clients = Client.objects.filter(id=client_id, bureau=request.user.bureau)
+        if clients:
+            client = clients.first()
+
+            pprint(client.pays.devise)
+            polices = Police.objects.filter(client_id=client_id, statut=StatutPolice.ACTIF, statut_contrat='CONTRAT', statut_validite=StatutValidite.VALIDE).order_by('-id')
+
+            derniere_police = polices.first()
+            nouvelles_polices = [derniere_police] if derniere_police and not derniere_police.has_beneficiaires else []
+
+            #les anciennes polices qui un mouvement_police de résiliation
+            anciennes_polices = polices.filter(
+                id__in=MouvementPolice.objects.filter(
+                    mouvement__code="RESIL",
+                    statut_validite=StatutValidite.VALIDE,
+                    #date_effet__gte=datetime.datetime.now(tz=timezone.utc).date(),
+                    police_id__in=polices.values_list('id', flat=True)
+                ).values_list('police_id', flat=True)
+            )
+
+            statut_contrat = "CONTRAT"
+
+            quittances = []
+            for police in polices:
+                quittances_of_police = Quittance.objects.filter(police_id=police.id)
+                quittances.extend(quittances_of_police)
+
+            acomptes = Acompte.objects.filter(client_id=client_id)
+
+            filiales = Filiale.objects.filter(client_id=client_id)
+
+            documents = Document.objects.filter(client_id=client_id)
+
+            contacts = Contact.objects.filter(client_id=client_id)
+
+            pays = Pays.objects.all().order_by('nom')
+
+            types_documents = TypeDocument.objects.all().order_by('libelle')
+
+            types_prefinancements = TypePrefinancement.objects.filter(statut=Statut.ACTIF).order_by('libelle')
+
+            # pour la creation de police
+            branches = Branche.objects.filter(status=True).order_by('nom')
+            produits = Produit.objects.all().order_by('nom')
+            bureaux = Bureau.objects.all().order_by('nom')
+            utilisateurs = None  # User.objects.all().order_by('last_name')
+            apporteurs = Apporteur.objects.filter(status=True).order_by('nom')
+            tickets_moderateurs = TicketModerateur.objects.all().order_by('libelle')
+            fractionnements = Fractionnement.objects.all().order_by('libelle')
+            modes_reglements = ModeReglement.objects.all().order_by('libelle')
+            regularisations = Regularisation.objects.all().order_by('libelle')
+            compagnies = Compagnie.objects.filter(bureau=request.user.bureau, status=True).order_by('nom')
+            durees = Duree.objects.all().order_by('libelle')
+            devises = Devise.objects.filter(id=client.pays.devise_id).order_by('libelle')
+            taxes = Taxe.objects.all().order_by('libelle')
+            bureau_taxes = BureauTaxe.objects.filter(bureau_id=client.bureau_id)
+            bases_calculs = BaseCalcul.objects.all().order_by('libelle')
+            modes_calculs = ModeCalcul.objects.all().order_by('libelle')
+
+            placement_gestion = PlacementEtGestion
+            mode_renouvellement = ModeRenouvellement
+            calcul_tm = CalculTM
+            type_majoration_contrat = TypeMajorationContrat
+
+            bureaux = Bureau.objects.filter(id=request.user.bureau.id)
+
+            context_perso = {'client': client, 'contacts': contacts, 'polices': polices, 'quittances': quittances,
+                             'acomptes': acomptes,
+                             'filiales': filiales, 'documents': documents, 'types_documents': types_documents,
+                             'branches': branches, 'produits': produits, 'pays': pays,
+                             'compagnies': compagnies, 'durees': durees, 'placement_gestion': placement_gestion,
+                             'mode_renouvellement': mode_renouvellement, 'tickets_moderateurs': tickets_moderateurs,
+                             'calcul_tm': calcul_tm,
+                             'fractionnements': fractionnements, 'modes_reglements': modes_reglements,
+                             'regularisations': regularisations,
+                             'devises': devises, 'utilisateurs': utilisateurs, 'bureaux': bureaux, 'taxes': taxes,
+                             'bureau_taxes': bureau_taxes,
+                             'apporteurs': apporteurs, 'bases_calculs': bases_calculs,
+                             'type_majoration_contrat': type_majoration_contrat, 'modes_calculs': modes_calculs,
+                             'statut_contrat': statut_contrat,
+                             'types_prefinancements': types_prefinancements,
+                             'anciennes_polices': anciennes_polices,
+                             'nouvelles_polices': nouvelles_polices
+                             }
+
+            context = {**context_original, **context_perso}
+
+            return self.render_to_response(context)
+
+        else:
+            return redirect("clients")
+
+
+    def post(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+
+        pprint(kwargs)
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }
+
 
 
 # Test excel file exploid
