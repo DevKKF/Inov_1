@@ -64,7 +64,7 @@
             {% endif %}
           </span>
           <span class="the_title" style="margin-left:10px;font-weight:bold;">
-             {{_('DETAILS_DU_CLIENT')}} {{ client.nom }} {{ client.prenom }}
+             {{_('DETAILS DU CLIENT')}} {{ client.nom }} {{ client.prenom }}
           </span>
         </h3>
     </div>
@@ -127,7 +127,7 @@
                   <div class="info-box collapsed active" data-toggle="collapse0" id="btnInfosClient" href="#collapseInfosClient" aria-expanded="true">
                       <span class="info-box-icon text-white elevation-1"><i class="fas fa-user-tag"></i></span></span>
                       <div class="info-box-content">
-                        <span class="info-box-text">{{_('FICHE_CLIENT')}}</span>
+                        <span class="info-box-text">{{_('FICHE CLIENT')}}</span>
                       </div>
                   </div>
 
@@ -212,7 +212,7 @@
               <h4></h4>
               <div class="card shadow_OLD">
                 <div class="card-header">
-                    <h3 class="card-title">{{_('FICHE_CLIENT')}}</h3>
+                    <h3 class="card-title">{{_('FICHE CLIENT')}}</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button>
                         <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
@@ -223,13 +223,13 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Nom_complet')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_('Nom complet')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.nom|default_if_none:"" }} {{ client.prenoms|default_if_none:"" }}</span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Code_client')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_('Code client')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.code|default:client.code_provisoire|default:"" }}</span>
                                 </div>
@@ -241,7 +241,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Type_personne')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_('Type personne')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.type_personne|default_if_none:"" }}</span>
                                 </div>
@@ -258,7 +258,7 @@
 
 
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Secteur_activite')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_('Secteur activite')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.secteur_activite|default_if_none:""  }}</span>
                                 </div>
@@ -277,7 +277,7 @@
                                 </div>
                             </div-->
                             <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">{{_('Date_de_enregistrement')}}</label>
+                                <label class="col-sm-5 col-form-label">{{_('Date enregistrement')}}</label>
                                 <div class="col-sm-7">
                                 <span class="form-control">{{ client.created_at|date:'d/m/Y à H:i:s'|default_if_none:""  }}</span>
                                 </div>
@@ -310,13 +310,13 @@
                     <div class="vl"></div>
                     <div class="col-md-5">
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Telephone_fixe')}}</label>
+                            <label class="col-sm-5 col-form-label">{{_('Tel fixe')}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.telephone_fixe|default_if_none:"" }}</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Telephone_mobile')}}</label>
+                            <label class="col-sm-5 col-form-label">{{_('Tel mobile')}}</label>
                             <div class="col-sm-7">
                             <span class="form-control">{{ client.telephone_mobile|default_if_none:"" }}</span>
                             </div>
@@ -329,12 +329,12 @@
                         </div>
                     </div>
                 </div>
-                <h6 class="o-primary">{{_('RESEAUX_SOCIAUX')}}</h6>
+                <h6 class="o-primary">{{_('RESEAUX SOCIAUX')}}</h6>
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-5 col-form-label">{{_('Site_web')}} </label>
+                            <label class="col-sm-5 col-form-label">{{_('Site web')}} </label>
                             <div class="col-sm-7">
                             <span class="form-control"><a href="https://{{client.site_web}}" target="_blank"> {{ client.site_web|default_if_none:"" }}</a></span>
                             </div>
@@ -436,7 +436,7 @@
               <h4></h4>
               <div class="card shadow_OLD">
                 <div class="card-header">
-                    <h3 class="card-title">{{_('LISTE_DE_SES_QUITTANCES')}}</h3>
+                    <h3 class="card-title">{{_('LISTE DE SES QUITTANCES')}}</h3>
                     <div class="card-tools">
 
                     </div>
@@ -492,7 +492,7 @@
               <h4></h4>
               <div class="card shadow_OLD">
                 <div class="card-header">
-                    <h3 class="card-title">{{_('LISTE_DE_SES_POLICES')}}</h3>
+                    <h3 class="card-title">{{_('LISTE DE SES POLICES')}}</h3>
                     <div class="card-tools">
                         <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#modal-police"><i class="fas fa-plus"></i> {{_('Creer_une_police')}}</a>&nbsp;&nbsp;
                         <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#modal-changement_compagnie"><i class="fas fa-refresh"></i> {{_('Changement_d_assureur')}}</a>&nbsp;&nbsp;

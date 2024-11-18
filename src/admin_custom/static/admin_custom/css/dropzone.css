@@ -402,7 +402,7 @@ filter:blur(8px)}
 
 .dropzone .dz-preview .dz-image
 {
-	border-radius:20px;
+	border-radius:20px;<
 	overflow:hidden;
 	/* width:120px; */
 	/* height:120px; */
