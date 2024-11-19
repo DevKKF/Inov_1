@@ -35,6 +35,17 @@
 											</select>
 										</div>
 									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">{{_("Type de client")}} <span class="required">*</span></label>
+										<div class="col-sm-7">
+											<select class="form-control" name="type_client_id" id="type_client_id" autocomplete="off" required>
+												<option value="">{{_('Choisir')}}</option>
+												{% for tc in types_clients %}
+												<option value="{{ tc.id }}" {% if tc.libelle == 'VIP'|stringformat:"s" %}selected{% endif %}>{{ tc.libelle }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
 									<div class="form-group row champ_variable_client if_personne_physique">
 										<label class="col-sm-5 col-form-label">Civilité <span class="required">*</span></label>
 										<div class="col-sm-7">
@@ -79,6 +90,17 @@
 								<div class="vl"></div>
 								<div class="col-md-5" style="border-left:0px;">
 
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">{{_("Business unit")}}</label>
+										<div class="col-sm-7">
+											<select class="form-control" name="business_unit_id" id="business_unit_id" autocomplete="off">
+												<option value="">{{_('Choisir')}}</option>
+												{% for bu in business_units %}
+												<option value="{{ bu.id }}">{{ bu.libelle }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">{{_('Pays')}} <span class="required">*</span></label>
 										<div class="col-sm-7">

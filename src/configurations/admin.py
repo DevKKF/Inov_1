@@ -15,8 +15,6 @@ from production.models import Quittance, SecteurActivite, TypeDocument, TarifPre
 
 from production.models import Client
 
-
-
 admin.site = custom_admin_site
 admin.site.site_header = 'INOV'
 
@@ -1060,6 +1058,13 @@ class ComptePrestataireVeosAdmin(ImportExportModelAdmin):
     list_per_page = 10
 
 
+class BusinessUnitAdmin(ImportExportModelAdmin):
+    list_filter = ('libelle', 'status', 'created_at')
+    list_display = ('libelle', 'status', 'created_at')
+    search_field = ('libelle', 'status', 'created_at')
+    list_per_page = 10
+
+
 admin.site.register(Bureau, BureausAdmin)
 admin.site.register(Compagnie, CompagnieAdmin)
 #admin.site.register(Prescripteur, PrescripteurAdmin)
@@ -1153,3 +1158,5 @@ admin.site.register(StatExcelWsBoby, StatExcelWsBobyAdmin)
 #admin.site.register(TypeDocument,TypeDocumentAdmin) #à réactiver plus tard
 #admin.site.register(Mouvement) #à réactiver plus tard
 #admin.site.register(Motif, MotifAdmin) #à réactiver plus tard
+
+admin.site.register(BusinessUnit, BusinessUnitAdmin)

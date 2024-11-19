@@ -46,7 +46,7 @@ from xhtml2pdf import pisa
 from configurations.models import Compagnie, MarqueVehicule, Pays, Civilite, QualiteBeneficiaire, Profession, \
     Produit, \
     Territorialite, ModeCalcul, Duree, TicketModerateur, TypeCarosserie, User, Fractionnement, ModeReglement, \
-    Regularisation, Bureau, \
+    Regularisation, Bureau, BusinessUnit, \
     Devise, Taxe, BureauTaxe, Apporteur, BaseCalcul, TypeQuittance, NatureQuittance, TypeClient, TypePersonne, Langue, \
     Branche, ParamProduitCompagnie, CategorieVehicule, Banque, \
     NatureOperation, TypeTarif, Prestataire, Acte, Rubrique, ReseauSoin, Periodicite, PrescripteurPrestataire, \
@@ -72,6 +72,7 @@ from shared.veos import get_taux_euro_by_devise, get_taux_usd_by_devise, send_cl
 from sinistre.models import Sinistre, DossierSinistre
 import traceback
 from django.core.files.base import File
+
 
 ## INOV API MOBILE
 # from django.views.decorators.csrf import csrf_exempt
@@ -823,8 +824,8 @@ def add_police(request, client_id):
                                            produit_id=produit.id,
                                            numero=numero,
                                            apporteur=apporteur,
-                                           programme_international=programme_international,
-                                           placement_gestion=placement_gestion,
+                                           #programme_international=programme_international,
+                                           #placement_gestion=placement_gestion,
                                            date_souscription=date_debut_effet,
                                            date_debut_effet=date_debut_effet,
                                            date_fin_effet=date_fin_effet,
@@ -842,7 +843,7 @@ def add_police(request, client_id):
                                            autres_taxes=autres_taxes,
                                            taux_com_courtage=taux_com_courtage,
                                            taux_com_courtage_terme=taux_com_courtage_terme,
-                                           taux_com_gestion=taux_com_gestion,
+                                           #taux_com_gestion=taux_com_gestion,
                                            commission_gestion=commission_gestion,
                                            commission_courtage=commission_courtage,
                                            commission_intermediaires=commission_intermediaires,
@@ -852,32 +853,33 @@ def add_police(request, client_id):
                                            type_prefinancement_id=type_prefinancement_id,
                                            calcul_tm=calcul_tm,
 
-                                           mode_calcul_id=mode_calcul_id,
-                                           prime_famille=prime_famille,
-                                           nombre_max_enfants_famille=nombre_max_enfants_famille,
-                                           nombre_max_personne_famille=nombre_max_personne_famille,
-                                           age_max_enfants=age_max_enfants,
-                                           age_max_adultes=age_max_adultes,
-                                           surprime_personne_sup=surprime_personne_sup,
-                                           surprime_enfant_sup=surprime_enfant_sup,
-                                           surprime_age_adulte=surprime_age_adulte,
-                                           surprime_ascendant=surprime_ascendant,
-                                           prime_personne=prime_personne,
-                                           prime_adulte=prime_adulte,
-                                           prime_enfant=prime_enfant,
-                                           taux_cotisation=taux_cotisation,
-                                           part_employeur=part_employeur,
-                                           cotisation_minimale=cotisation_minimale,
-                                           cotisation_maximale=cotisation_maximale,
-                                           type_majoration=type_majoration,
+                                           #mode_calcul_id=mode_calcul_id,
+                                           #prime_famille=prime_famille,
+                                           #nombre_max_enfants_famille=nombre_max_enfants_famille,
+                                           #nombre_max_personne_famille=nombre_max_personne_famille,
+                                           #age_max_enfants=age_max_enfants,
+                                           #age_max_adultes=age_max_adultes,
+                                           #surprime_personne_sup=surprime_personne_sup,
+                                           #surprime_enfant_sup=surprime_enfant_sup,
+                                           #surprime_age_adulte=surprime_age_adulte,
+                                           #surprime_ascendant=surprime_ascendant,
+                                           #prime_personne=prime_personne,
+                                           #prime_adulte=prime_adulte,
+                                           #prime_enfant=prime_enfant,
+                                           #taux_cotisation=taux_cotisation,
+                                           #part_employeur=part_employeur,
+                                           #cotisation_minimale=cotisation_minimale,
+                                           #cotisation_maximale=cotisation_maximale,
+                                           #type_majoration=type_majoration,
 
-                                           autofinancement=autofinancement,
-                                           devise_id=devise_id,
-                                           taux_charge=taux_charge,
-                                           coefficient_n=coefficient_n,
-                                           coefficient_n1=coefficient_n1,
-                                           coefficient_n2=coefficient_n2,
-                                           coefficient_n3=coefficient_n3,
+                                           #autofinancement=autofinancement,
+                                           #devise_id=devise_id,
+                                           #taux_charge=taux_charge,
+                                           #coefficient_n=coefficient_n,
+                                           #coefficient_n1=coefficient_n1,
+                                           #coefficient_n2=coefficient_n2,
+                                           #coefficient_n3=coefficient_n3,
+
                                            statut_contrat=statut_contrat,
                                            statut=Statut.ACTIF,
                                            created_by=request.user
@@ -5887,21 +5889,18 @@ class ClientsView(TemplateView):
     def get(self, request, *args, **kwargs):
         context_original = self.get_context_data(**kwargs)
 
-        groupes_internationaux = GroupeInter.objects.filter(status=True).order_by('nom')
-
         types_clients = TypeClient.objects.all().order_by('libelle')
         types_personnes = TypePersonne.objects.all().order_by('libelle')
         civilites = Civilite.objects.all().order_by('name')
-        langues = Langue.objects.all().order_by('libelle')
         bureaux = Bureau.objects.all().order_by('nom')
         pays = Pays.objects.all().order_by('nom')
+        business_units = BusinessUnit.objects.all().order_by('libelle')
         utilisateurs = User.objects.filter(bureau=request.user.bureau, type_utilisateur__code="INTERNE", is_active=True).order_by('last_name')
-        gestionnaires = User.objects.filter(bureau=request.user.bureau, type_utilisateur__code="INTERNE", is_active=True).order_by('last_name')
         secteurs_activite = SecteurActivite.objects.filter(status=True).order_by('libelle')
 
         context_perso = {'types_clients': types_clients, 'types_personnes': types_personnes, 'secteurs_activite': secteurs_activite,
-                         'civilites': civilites, 'langues': langues, 'bureaux': bureaux, 'pays': pays,
-                         'utilisateurs': utilisateurs, 'gestionnaires': gestionnaires, 'groupes_internationaux': groupes_internationaux, }
+                         'civilites': civilites, 'bureaux': bureaux, 'pays': pays, 'business_units': business_units,
+                         'utilisateurs': utilisateurs}
 
         context = {**context_original, **context_perso}
 
@@ -5956,22 +5955,9 @@ def clients_datatable(request):
             Q(type_personne_id=search_type_personne)
         )
 
-    # Map column index to corresponding model field for sorting
-    sort_columns = {
-        0: 'nom',
-        1: 'type_personne__libelle',
-        2: 'telephone_mobile',
-        # Add more columns as needed
-    }
-
-    # Default sorting by 'id' if column index is not found
-    sort_column = sort_columns.get(sort_column_index, 'id')
-
-    if sort_direction == 'desc':
-        sort_column = '-' + sort_column  # For descending order
 
     # Apply sorting
-    queryset = queryset.order_by(sort_column)
+    queryset = queryset.order_by('-code')
 
     paginator = Paginator(queryset, length)
     page_obj = paginator.get_page(page_number)
@@ -6006,6 +5992,7 @@ def clients_datatable(request):
             "info_beneficiaire": info_beneficiaire_html,
             "type_personne": c.type_personne.libelle if c.type_personne else "",
             "type_client": c.type_client.libelle if c.type_client else "",
+            "business_unit": c.business_unit.libelle if c.business_unit else "",
             "telephone_mobile": c.telephone_mobile,
             "statut": c.statut,
             "actions": actions_html,
@@ -6035,6 +6022,8 @@ def add_client(request):
                                        nom=request.POST.get('nom'),
                                        prenoms=request.POST.get('prenoms'),
                                        secteur_activite_id=request.POST.get('secteur_activite_id'),
+                                       type_client_id=request.POST.get('type_client_id'),
+                                       business_unit_id=request.POST.get('business_unit_id'),
                                        date_naissance=date_naissance,
                                        telephone_mobile=request.POST.get('telephone_mobile'),
                                        telephone_fixe=request.POST.get('telephone_fixe'),
@@ -6112,6 +6101,8 @@ def modifier_client(request, client_id):
         Client.objects.filter(id=client_id).update(nom=request.POST.get('nom'),
                                                    prenoms=request.POST.get('prenoms'),
                                                    secteur_activite_id=request.POST.get('secteur_activite_id'),
+                                                   type_client_id=request.POST.get('type_client_id'),
+                                                   business_unit_id=request.POST.get('business_unit_id'),
                                                    date_naissance=date_naissance,
                                                    telephone_mobile=request.POST.get('telephone_mobile'),
                                                    telephone_fixe=request.POST.get('telephone_fixe'),
@@ -6163,7 +6154,7 @@ def modifier_client(request, client_id):
         types_clients = TypeClient.objects.all().order_by('libelle')
         types_personnes = TypePersonne.objects.all().order_by('libelle')
         civilites = Civilite.objects.all().order_by('name')
-        langues = Langue.objects.all().order_by('libelle')
+        business_units = BusinessUnit.objects.all().order_by('libelle')
         bureaux = Bureau.objects.all().order_by('nom')
         pays = Pays.objects.all().order_by('nom')
         utilisateurs = User.objects.all().order_by('last_name')
@@ -6174,7 +6165,7 @@ def modifier_client(request, client_id):
 
         return render(request, 'client/modal_client_modification.html',
                       {'client': client, 'types_clients': types_clients, 'types_personnes': types_personnes, 'secteurs_activite': secteurs_activite,
-                       'civilites': civilites, 'langues': langues, 'bureaux': bureaux, 'pays': pays,
+                       'civilites': civilites, 'business_units': business_units, 'bureaux': bureaux, 'pays': pays,
                        'utilisateurs': utilisateurs, 'gestionnaires': gestionnaires, 'genre': genre, 'groupes_internationaux': groupes_internationaux, })
 
 
@@ -6322,6 +6313,101 @@ class PoliceClientView(TemplateView):
             "opts": self.model._meta,
         }
 
+
+#Liste des contacts du client
+@method_decorator(login_required, name='dispatch')
+class ContactClientView(TemplateView):
+    permission_required = "production.view_clients"
+    template_name = 'client/client_contacts.html'
+    model = Client
+
+    def get(self, request, client_id, *args, **kwargs):
+        context_original = self.get_context_data(**kwargs)
+
+
+        clients = Client.objects.filter(id=client_id, bureau=request.user.bureau)
+        if clients:
+            client = clients.first()
+
+            pprint(client.pays.devise)
+
+            statut_contrat = "CONTRAT"
+
+            acomptes = Acompte.objects.filter(client_id=client_id)
+
+            filiales = Filiale.objects.filter(client_id=client_id)
+
+            documents = Document.objects.filter(client_id=client_id)
+
+            contacts = Contact.objects.filter(client_id=client_id)
+
+            pays = Pays.objects.all().order_by('nom')
+
+            types_documents = TypeDocument.objects.all().order_by('libelle')
+
+            types_prefinancements = TypePrefinancement.objects.filter(statut=Statut.ACTIF).order_by('libelle')
+
+            # pour la creation de police
+            branches = Branche.objects.filter(status=True).order_by('nom')
+            produits = Produit.objects.all().order_by('nom')
+            bureaux = Bureau.objects.all().order_by('nom')
+            utilisateurs = None  # User.objects.all().order_by('last_name')
+            apporteurs = Apporteur.objects.filter(status=True).order_by('nom')
+            tickets_moderateurs = TicketModerateur.objects.all().order_by('libelle')
+            fractionnements = Fractionnement.objects.all().order_by('libelle')
+            modes_reglements = ModeReglement.objects.all().order_by('libelle')
+            regularisations = Regularisation.objects.all().order_by('libelle')
+            compagnies = Compagnie.objects.filter(bureau=request.user.bureau, status=True).order_by('nom')
+            durees = Duree.objects.all().order_by('libelle')
+            devises = Devise.objects.filter(id=client.pays.devise_id).order_by('libelle')
+            taxes = Taxe.objects.all().order_by('libelle')
+            bureau_taxes = BureauTaxe.objects.filter(bureau_id=client.bureau_id)
+            bases_calculs = BaseCalcul.objects.all().order_by('libelle')
+            modes_calculs = ModeCalcul.objects.all().order_by('libelle')
+
+            placement_gestion = PlacementEtGestion
+            mode_renouvellement = ModeRenouvellement
+            calcul_tm = CalculTM
+            type_majoration_contrat = TypeMajorationContrat
+
+            bureaux = Bureau.objects.filter(id=request.user.bureau.id)
+
+            context_perso = {'client': client, 'contacts': contacts,
+                             'acomptes': acomptes,
+                             'filiales': filiales, 'documents': documents, 'types_documents': types_documents,
+                             'branches': branches, 'produits': produits, 'pays': pays,
+                             'compagnies': compagnies, 'durees': durees, 'placement_gestion': placement_gestion,
+                             'mode_renouvellement': mode_renouvellement, 'tickets_moderateurs': tickets_moderateurs,
+                             'calcul_tm': calcul_tm,
+                             'fractionnements': fractionnements, 'modes_reglements': modes_reglements,
+                             'regularisations': regularisations,
+                             'devises': devises, 'utilisateurs': utilisateurs, 'bureaux': bureaux, 'taxes': taxes,
+                             'bureau_taxes': bureau_taxes,
+                             'apporteurs': apporteurs, 'bases_calculs': bases_calculs,
+                             'type_majoration_contrat': type_majoration_contrat, 'modes_calculs': modes_calculs,
+                             'statut_contrat': statut_contrat,
+                             'types_prefinancements': types_prefinancements
+                             }
+
+            context = {**context_original, **context_perso}
+
+            return self.render_to_response(context)
+
+        else:
+            return redirect("clients")
+
+
+    def post(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+
+        pprint(kwargs)
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }
 
 
 # Test excel file exploid

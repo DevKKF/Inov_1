@@ -647,59 +647,56 @@ $(document).ready(function () {
 
 
     //----------------- AJOUT DE CONTACT ------------------//
-    $(document).on('click', "#modal-contact #btn_save_contact", function () {
+    // TODO AJOUT DE CONTACT DU CLIENT
+    //Ajout contact
+    $("#btn_enregistrer_contact_client").on('click', function () {
 
-        let client_id = $("#modal-contact #client_id").val();
+        let btn_enregistrer_contact_client = $(this);
 
-        $.ajax({
-            type: 'post',
-            url: '/production/client/' + client_id + '/contact/add',
-            data: $("#modal_form_contact").serialize(),
-            success: function (response) {
+        let formulaire = $('#form_contact_client');
 
-                if (response.statut == 1) {
+        $.validator.setDefaults({ ignore: [] });
 
-                    //mettre à jour le tableau
-                    let contact = response.data;
-                    let t = $('#table_contacts').DataTable();
-                    t.row.add([contact.nom, contact.prenoms, contact.fonction, contact.telephone, contact.email, '<td class=""><span class="btn_supprimer_contact" onClick="supprimer_contact(' + contact.id + ')" data-contact_id="' + contact.id + '" style="cursor:pointer;">&nbsp;&nbsp;&nbsp;<i class="fa fa-times text-danger"></i> </span><span class="btn_modifier_on_modal" data-model_name="contact"  data-href="/production/contact/' + contact.id + '/modifier" data-modal_title="Modification d\'un contact" title="Modifier" style="cursor:pointer;"><i class="fas fa-edit text-warning"></i></span></td>']).draw(false);
+        if (formulaire.valid()) {
 
-                    //Afficher le message de succès et fermer la fenêtre
-                    $("#modal_form_contact input[type=text]").val("");
-                    $("#modal_form_contact input[type=email]").val("");
+            $.ajax({
+                type: 'post',
+                url: formulaire.attr('action'),
+                data: $('#form_contact_client').serialize(),
+                beforeSend: function () {
+                    $('#loading_gif').show();
+                    btn_enregistrer_contact_client.hide();
+                },
+                success: function (response) {
 
-                    $('#modal_form_contact .alert .message').text(response.message);
+                    $('#loading_gif').hide();
+                    //btn_enregistrer_contact_client.hide();
 
-                    $('#modal_form_contact .alert ').fadeTo(2000, 500).slideUp(500, function () {
-                        $(this).slideUp(500);
-                        $("#modal-contact").modal('toggle');
-                    }).removeClass('alert-warning').addClass('alert-success');
+                    if (response.statut == 1) {
 
-                } else {
+                        notifySuccess(response.message, function () {
+                            location.reload();
+                        });
 
-                    $('#modal_form_contact .alert .message').text(response.message);
+                    } else {
+                        notifyWarning(response.message);
+                    }
 
-                    $('#modal_form_contact .alert ').fadeTo(2000, 500).slideUp(500, function () {
-                        $(this).slideUp(500);
-                    }).removeClass('alert-success').addClass('alert-warning');
-
+                },
+                error: function (response) {
+                    console.log(response);
+                    btn_enregistrer_contact_client.show();
                 }
+            });
 
-
-            },
-            error: function () {
-
-                $('#modal_form_contact .alert .message').text("Erreur lors de l'enregistrement !");
-
-                $('#modal_form_contact .alert ').fadeTo(2000, 500).slideUp(500, function () {
-                    $(this).slideUp(500);
-                }).removeClass('alert-success').addClass('alert-warning');
-
-            }
-        });
+        } else {
+            let validator = formulaire.validate();
+            notifyWarning("Veuillez renseigner tout les champs obligatoire");
+        }
 
     });
 
+    //Modifier contact
 
     //Standard: ouvrir les popups de modification
     $(document).on("click", ".btn_modifier_on_modal", function () {
