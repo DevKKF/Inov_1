@@ -1,3 +1,59 @@
+{% extends 'police/menu_client_police.html' %}
+{% load my_filters %}
+{% load i18n %}
+{% block extrastyle %}
+  <style type="text/css">
+    .vl {
+       border-left: 2px solid var(--colorPrimary);
+       height: auto;
+    }
+    .o-primary {
+      color: var(--colorPrimary);
+    }
+
+    .o-bg-primary {
+      background-color: var(--colorPrimary);
+      color: #fff;
+    }
+
+    .info-box{
+        cursor:pointer;
+    }
+
+    .info-box .collapsed{
+        background: white;
+        color:var(--colorPrimary);
+    }
+
+    .info-box-icon{
+        background: var(--colorPrimary);
+        color:white;
+    }
+
+    .info-box .collapsed .info-box-icon{
+        background: var(--colorPrimary);
+        color:white;
+    }
+
+    .info-box .collapsed .info-box-icon i{
+        color:white;
+    }
+
+    .info-box:not(.collapsed) .info-box-icon{
+        background: var(--colorAccent);
+    }
+
+
+    .info-box.active .info-box-icon{
+        background: var(--colorAccent);
+    }
+
+    .tab-pane{
+        overflow-x: hidden;
+    }
+
+  </style>
+{% endblock %}
 <div class="col-12 col-md-12" style="padding:0px;margin:0px;">
   <div class="card">
     <div class="card-header">
@@ -53,7 +109,7 @@
       </div>
     </div>
   </div>
-  
+
 <div class="row">
     <!--div class="col-12 col-sm-4 col-md-2">
       <a href="{% url 'client_details' police.client.id %}">
@@ -179,4 +235,3 @@
     </div-->
 
   </div>
-
