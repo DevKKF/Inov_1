@@ -828,7 +828,9 @@ $(document).ready(function () {
     });
 
 
-    function supprimer_contact(contact_id) {
+    // Suppression d'un contact
+    $(document).on('click', '.btn_supprimer_contact', function () {
+        let contact_id = $(this).data('contact_id');
 
         let n = noty({
             text: 'Voulez-vous vraiment supprimer ce contact ?',
@@ -843,7 +845,7 @@ $(document).ready(function () {
 
                         //effectuer la suppression
                         $.ajax({
-                            url: '/production/contact/delete',
+                            url: '/production/client/delete',
                             type: 'post',
                             data: { contact_id: contact_id },
                             success: function (e) {
@@ -868,7 +870,7 @@ $(document).ready(function () {
         });
 
 
-    }
+    });
 
 
     //----------------- FIN AJOUT DE CONTACT ------------------//

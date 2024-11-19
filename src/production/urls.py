@@ -3,7 +3,7 @@ from django.urls import path
 
 from . import views
 from .views import ClientsView, ExcelFileView, FormulesUniversellesView, FormulesView, DetailsFormuleView, \
-    DetailsClientView, PoliceClientView, ContactClientView, \
+    DetailsClientView, PoliceClientView, ContactClientView, FilialeClientView, \
     PoliceBeneficiairesView, PoliceGedView, PoliceAvenantsView, PoliceTarifsSpecifiquesView, PoliceQuittancesView, \
     PoliceSinistresView, PhotosBeneficiairesView, AnnulerQuittanceView
 
@@ -36,6 +36,7 @@ urlpatterns = [
     path("contact/<int:contact_id>/modifier", views.modifier_contact, name='modifier_contact'),
     path("contact/delete", views.supprimer_contact, name='supprimer_contact'),
 
+    path("client/<int:client_id>/liste-filiale", FilialeClientView.as_view(), name='client_filiales'),
     path("client/<int:client_id>/filiale/add", views.add_filiale, name='client_add_filiale'),
     path("filiale/<int:filiale_id>/modifier", views.modifier_filiale, name='modifier_filiale'),
     path("filiale/delete", views.supprimer_filiale, name='supprimer_filiale'),
