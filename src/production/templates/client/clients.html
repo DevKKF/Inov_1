@@ -66,6 +66,8 @@
                       <th scope="col">{% trans 'Nom complet' %}</th>
                       <th scope="col">{% trans 'N° Polices' %}</th>
                       <th scope="col">{% trans 'Type personne' %}</th>
+                      <th scope="col">{% trans 'Type client' %}</th>
+                      <th scope="col">{% trans 'Business unit' %}</th>
                       <th class="text-center" scope="col" width="150px">{% trans 'Actions' %}</th>
                     </tr>
                   </thead>
@@ -112,18 +114,20 @@
                 {"data": "nom", "orderable": true},
                 {"data": "numero_police", "orderable": true},
                 {"data": "type_personne", "orderable": true},
+                {"data": "type_client", "orderable": true},
+                {"data": "business_unit", "orderable": true},
                 {"data": "actions", "orderable": false, "searchable": false},
             ],
             "paging": true,
-            "pageLength": 10,
+            "pageLength": 100,
             "processing": false,  // Show the loading indicator
             "searching": false,   // Enable the search feature
             "search": {
                 "search": $('#table_clients-table_filter input').val()
             },
             "lengthMenu": [
-                [10, 25, 50, 100, 500, 1000],
-                [10, 25, 50, 100, 500, 1000]
+                [100, 250, 500, 1000, 5000, 10000],
+                [100, 250, 500, 1000, 5000, 10000]
             ]
         });
 

@@ -2485,3 +2485,17 @@ class ComptePrestataireVeos(models.Model):
         db_table = 'compte_prestataire_veos'
         verbose_name = 'Compte Prestataire VEOS'
         verbose_name_plural = 'Comptes Prestataires VEOS'
+
+class BusinessUnit(models.Model):
+    libelle = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.libelle} - {self.status} - {self.created_at} - {self.updated_at}"
+
+    class Meta:
+        db_table = 'business_unit'
+        verbose_name = 'Business Unit'
+        verbose_name_plural = 'Business Unit'

@@ -3,7 +3,7 @@ from django.urls import path
 
 from . import views
 from .views import ClientsView, ExcelFileView, FormulesUniversellesView, FormulesView, DetailsFormuleView, \
-    DetailsClientView, PoliceClientView, \
+    DetailsClientView, PoliceClientView, ContactClientView, \
     PoliceBeneficiairesView, PoliceGedView, PoliceAvenantsView, PoliceTarifsSpecifiquesView, PoliceQuittancesView, \
     PoliceSinistresView, PhotosBeneficiairesView, AnnulerQuittanceView
 
@@ -25,11 +25,13 @@ urlpatterns = [
     path("client/add_client", views.add_client, name='add_client'),
     path('client/<int:client_id>/modifier', views.modifier_client, name='modifier_client'),
     path('client/<int:client_id>', DetailsClientView.as_view(), name='client_details'),
-    path("client/liste-police/<int:client_id>", PoliceClientView.as_view(), name='client_polices'),
-    path("client/<int:client_id>/polices", views.list_polices, name='client_list_polices'),
-    path("client/<int:client_id>/add_police", views.add_police, name='add_police'),
     path("client/delete", views.supprimer_client, name='supprimer_client'),
 
+    path("client/<int:client_id>/liste-police", PoliceClientView.as_view(), name='client_polices'),
+    path("client/<int:client_id>/polices", views.list_polices, name='client_list_polices'),
+    path("client/<int:client_id>/add_police", views.add_police, name='add_police'),
+
+    path("client/<int:client_id>/liste-contact", ContactClientView.as_view(), name='client_contacts'),
     path("client/<int:client_id>/contact/add", views.add_contact, name='client_add_contact'),
     path("contact/<int:contact_id>/modifier", views.modifier_contact, name='modifier_contact'),
     path("contact/delete", views.supprimer_contact, name='supprimer_contact'),

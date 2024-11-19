@@ -16,7 +16,7 @@ from configurations.models import Banque, Bureau, Civilite, Compagnie, Fractionn
     QualiteBeneficiaire, TypeAssurance, Devise, Profession, ModeCalcul, Taxe, Apporteur, BaseCalcul, TypeQuittance, \
     NatureQuittance, TypeCarosserie, CategorieVehicule, MarqueVehicule, NatureOperation, Prestataire, TypeTarif, Acte, \
     Rubrique, Periodicite, RegroupementActe, SousRubrique, TypePrefinancement, ReseauSoin, CompteTresorerie, \
-    SousRegroupementActe, Secteur, GroupeInter
+    SousRegroupementActe, Secteur, GroupeInter, BusinessUnit
 from shared.enum import Genre, Statut, StatutRelation, StatutFamilial, OptionYesNo, PlacementEtGestion, \
     ModeRenouvellement, TypeEncaissementCommission, TypeMajorationContrat, CalculTM, StatutContrat, StatutPolice, StatutQuittance, \
     StatutReversementCompagnie, StatutReglementApporteurs, StatutEncaissementCommission, Energie, StatutSinistre, \
@@ -56,8 +56,11 @@ class SecteurActivite(models.Model):
     def __str__(self):
         return self.libelle
 
+
     class Meta:
         db_table = 'secteur_activite'
+        verbose_name = 'Secteur d\'activité '
+        verbose_name_plural = 'Secteur d\'activité'
 
 class Client(models.Model):
     veos_assure_sante_idper = models.CharField(max_length=100, blank=False, null=True)
@@ -67,6 +70,7 @@ class Client(models.Model):
     type_client = models.ForeignKey(TypeClient, blank=False, null=True, on_delete=models.RESTRICT)
     pays = models.ForeignKey(Pays, blank=True, null=True, on_delete=models.RESTRICT)
     groupe_international = models.ForeignKey(GroupeInter, blank=True, null=True, on_delete=models.RESTRICT)
+    business_unit = models.ForeignKey(BusinessUnit, blank=True, null=True, on_delete=models.RESTRICT)
     code = models.CharField(max_length=25, blank=False, null=True)
     code_provisoire = models.CharField(max_length=25, blank=False, null=True)
     nom = models.CharField(max_length=100, blank=False, null=True)
