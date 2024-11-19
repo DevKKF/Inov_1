@@ -102,7 +102,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
                         {{_('Adresse')}}
                     </th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                    <th width="80px" class="text-center sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">
                         {{_('Action')}}
                     </th>
                 </tr>
@@ -114,9 +114,9 @@
                     <td class="">{{ filiale.pays }}</td>
                     <td class="">{{ filiale.ville }}</td>
                     <td class="">{{ filiale.adresse }}</td>
-                    <td class="">
-                        <span class="btn_supprimer_filiale" data-filiale_id="{{ filiale.id }}" onclick="supprimer_filiale({{ filiale.id }})" style="cursor:pointer;"><i class="fa fa-times text-danger"></i> </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="btn_modifier_on_modal" data-model_name="filiale" data-href="{% url 'modifier_filiale' filiale.id %}" data-modal_title="Modification d'une filiale" title="Modifier" style="cursor:pointer;"><i class="fas fa-edit text-warning"></i></span>
+                    <td class="text-center">
+                        <span class="badge badge-danger btn_supprimer_filiale" data-filiale_id="{{ filiale.id }}" style="cursor:pointer;"><i class="fa fa-trash"></i> </span>&nbsp;
+                        <span class="badge badge-warning btn_modifier_on_modal text-white" data-model_name="filiale" data-href="{% url 'modifier_filiale' filiale.id %}" data-modal_title="Modification d'une filiale" title="Modifier" style="cursor:pointer;"><i class="fas fa-edit"></i></span>
                     </td>
                 </tr>
                 {% endfor %}

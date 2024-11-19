@@ -696,8 +696,6 @@ $(document).ready(function () {
 
     });
 
-    //Modifier contact
-
     //Standard: ouvrir les popups de modification
     $(document).on("click", ".btn_modifier_on_modal", function () {
 
@@ -877,7 +875,7 @@ $(document).ready(function () {
 
 
     //----------------- AJOUT DE FILIALE ------------------//
-    $(document).on('click', "#modal-filiale #btn_save_filiale", function () {
+    /*$(document).on('click', "#modal-filiale #btn_save_filiale", function () {
 
         let client_id = $("#modal-filiale #client_id").val();
 
@@ -929,10 +927,59 @@ $(document).ready(function () {
             }
         });
 
+    });*/
+
+    // TODO AJOUT DE FILIALE DU CLIENT
+    //Ajout filiale
+    $("#btn_enregistrer_filiale_client").on('click', function () {
+
+        let btn_enregistrer_filiale_client = $(this);
+
+        let formulaire = $('#form_filiale_client');
+
+        $.validator.setDefaults({ ignore: [] });
+
+        if (formulaire.valid()) {
+
+            $.ajax({
+                type: 'post',
+                url: formulaire.attr('action'),
+                data: $('#form_filiale_client').serialize(),
+                beforeSend: function () {
+                    $('#loading_gif').show();
+                    btn_enregistrer_filiale_client.hide();
+                },
+                success: function (response) {
+
+                    $('#loading_gif').hide();
+                    //btn_enregistrer_filiale_client.hide();
+
+                    if (response.statut == 1) {
+
+                        notifySuccess(response.message, function () {
+                            location.reload();
+                        });
+
+                    } else {
+                        notifyWarning(response.message);
+                    }
+
+                },
+                error: function (response) {
+                    console.log(response);
+                    btn_enregistrer_filiale_client.show();
+                }
+            });
+
+        } else {
+            let validator = formulaire.validate();
+            notifyWarning("Veuillez renseigner tout les champs obligatoire");
+        }
+
     });
 
-
-    function supprimer_filiale(filiale_id) {
+    $(document).on('click', '.btn_supprimer_filiale', function () {
+        let filiale_id = $(this).data('filiale_id');
 
         let n = noty({
             text: 'Voulez-vous vraiment supprimer cette filiale ?',
@@ -971,7 +1018,8 @@ $(document).ready(function () {
             ]
         });
 
-    }
+
+    });
 
     //----------------- FIN AJOUT DE FILIALE ------------------//
 
