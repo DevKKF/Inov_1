@@ -41,7 +41,7 @@
 											<select class="form-control" name="type_client_id" id="type_client_id" autocomplete="off" required>
 												<option value="">{{_('Choisir')}}</option>
 												{% for tc in types_clients %}
-												<option value="{{ tc.id }}" {% if tc.libelle == 'VIP'|stringformat:"s" %}selected{% endif %}>{{ tc.libelle }}</option>
+												<option value="{{ tc.id }}" {% if tc.libelle == 'STANDARD'|stringformat:"s" %}selected{% endif %}>{{ tc.libelle }}</option>
 												{% endfor %}
 											</select>
 										</div>
