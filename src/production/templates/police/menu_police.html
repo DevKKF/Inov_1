@@ -251,21 +251,11 @@
 
             <!-- changement de bureau pour les superusers -->
             {% if user.is_superuser or user.is_admin_group %}
-            <!--li-- class="nav-item dropdown">
-                <a class="nav-link btn" data-toggle="dropdown" href="#" title="Changer de bureau">
-                     <span class="current_bureau">{{ user.bureau }}  <i class="fas fa-home" aria-hidden="true"></i> </span>
+            <li class="nav-item dropdown">
+                <a class="nav-link btn" data-toggle="dropdown" href="#" title="Détails de la police">
+                     <span class="current_police">POLICE : {{ police.numero|default_if_none:"" }}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left" style="height:400px;overflow:auto;">
-                    <form action="{% url 'set_bureau' %}" method="post">
-                        {% csrf_token %}
-                        {% for bureau in request.session.bureaux|dictsort:"nom" %}
-                            <button type="submit" name="bureau_id" value="{{ bureau.id }}" class="dropdown-item">
-                                {{ bureau.nom|upper }}
-                            </button>
-                        {% endfor %}
-                    </form>
-                </div>
-            </li-->
+            </li>
             {% endif %}
             <!-- changement de bureau pour les superusers -->
 
@@ -362,7 +352,7 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police.details' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-user-tag"></i>
+                  <i class="nav-icon fas fa-file-contract"></i>
                   <p>
                     Fiche de la police
                   </p>
@@ -370,15 +360,15 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police_avenants' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-file-contract"></i>
+                  <i class="nav-icon fas fa-history"></i>
                   <p>
                     Avenants
                   </p>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" style="font-size:15px">
                 <a href="{% url 'police_formules' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-phone-alt"></i>
+                  <i class="nav-icon fas fa-umbrella"></i>
                   <p>
                     Formumle de garantie
                   </p>
@@ -386,7 +376,7 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police_ged' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-users"></i>
+                  <i class="nav-icon fas fa-folder-open"></i>
                   <p>
                     GED
                   </p>
@@ -394,7 +384,7 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police_vehicules' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-file-alt"></i>
+                  <i class="nav-icon fa fa-car"></i>
                   <p>
                     Aliments
                   </p>
@@ -402,7 +392,7 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police_quittances' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-funnel-dollar"></i>
+                  <i class="nav-icon fas fa-file-invoice-dollar"></i>
                   <p>
                     Quittances
                   </p>
@@ -410,7 +400,7 @@
             </li>
             <li class="nav-item">
                 <a href="{% url 'police_sinistres' police.id %}" class="nav-link">
-                  <i class="nav-icon fas fa-funnel-dollar"></i>
+                  <i class="nav-icon fas fa-user-injured"></i>
                   <p>
                     Sinistres
                   </p>
