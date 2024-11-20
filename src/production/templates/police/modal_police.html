@@ -67,7 +67,7 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Compagnie')}} <span class="required">*</span></label>
+										<label class="col-sm-5 col-form-label">{{_('Assureur')}} <span class="required">*</span></label>
 										<div class="col-sm-7">
 											<select class="form-control" name="compagnie" id="compagnie" autocomplete="off" required>
 												<option value="">{{_('Choisir')}}</option>
@@ -133,19 +133,6 @@
 												<option value="{{ placement_gestion.EN_LOCAL }}" selected>{{ placement_gestion.EN_LOCAL }}</option>
 												<option value="{{ placement_gestion.PAR_LE_COURTIER_MASTER }}">{{ placement_gestion.PAR_LE_COURTIER_MASTER }}</option>
 											</select>
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-sm-5 col-form-label">{{_('Apporteur')}} <span class="required"></span></label>
-										<div class="col-sm-7">
-											<div class="icheck-danger d-inline">
-											  <input type="radio" name="apporteur" value="OUI" id="yes_apporteur"/>
-											  <label for="yes_apporteur"> {{_('OUI')}} </label>
-											</div>
-											<div class="icheck-danger d-inline" style="margin-left:50px;">
-											  <input type="radio" name="apporteur" value="NON" id="no_apporteur" checked/>
-											  <label for="no_apporteur">{{_('NON')}} </label>
-											</div>
 										</div>
 									</div>
 									<div class="form-group row d-none">
@@ -407,8 +394,23 @@
 						<div class="tab-pane fade mt-3" id="intermediaire" role="tabpanel" aria-labelledby="intermediaire-tab">
 							<div class="row">
 								<div class="col-md-12">
-									<div class="col-sm-12" style="padding-right:0px;" id="test">
-										<table id="table_apporteurs_police" style="width:100%;" class="table table-bordered table-striped dataTable_ dtr-inline">
+									<div class="form-group row">
+										<label class="col-sm-6 col-form-label">{{_('Apporteur')}} <span class="required"></span></label>
+										<div class="col-sm-6">
+											<div class="icheck-danger d-inline">
+											  <input type="radio" name="apporteur" value="OUI" id="yes_apporteur"/>
+											  <label for="yes_apporteur"> {{_('OUI')}} </label>
+											</div>
+											<div class="icheck-danger d-inline" style="margin-left:50px;">
+											  <input type="radio" name="apporteur" value="NON" id="no_apporteur" checked/>
+											  <label for="no_apporteur">{{_('NON')}} </label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12" id="test">
+									<hr>
+									<table id="table_apporteurs_police" style="width:100%;" class="table table-bordered table-striped dataTable_ dtr-inline">
 											<thead>
 												<tr>
 													<th style="width:;">{{_("Apporteur d'affaire")}}<span id="btn_refresh_liste_apporteurs" class="fa fa-refresh pull-right" data-href="{% url 'ajax_apporteurs' %}" title="Rafraichir" style="cursor:pointer;margin-top:5px;"></span></th>
@@ -459,7 +461,6 @@
 												<tr class="add-row"><td colspan="5"><span id="btnAddLigneApporteur" style="cursor:pointer;" class="btn btn-sm btn-default float-right"><i class="fa fa-plus" style="font-size:12px;"></i> {{_('Ajouter_une_ligne')}}</span></td></tr>
 											</tfoot>
 										</table>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -631,3 +632,4 @@
 		</div>
 	</div>
 </div>
+

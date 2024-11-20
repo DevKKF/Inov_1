@@ -3,7 +3,7 @@ from django.urls import path
 
 from . import views
 from .views import ClientsView, ExcelFileView, FormulesUniversellesView, FormulesView, DetailsFormuleView, \
-    DetailsClientView, PoliceClientView, ContactClientView, FilialeClientView, \
+    DetailsClientView, PoliceClientView, ContactClientView, FilialeClientView, AcompteClientView, GEDClientView, \
     PoliceBeneficiairesView, PoliceGedView, PoliceAvenantsView, PoliceTarifsSpecifiquesView, PoliceQuittancesView, \
     PoliceSinistresView, PhotosBeneficiairesView, AnnulerQuittanceView
 
@@ -41,10 +41,12 @@ urlpatterns = [
     path("filiale/<int:filiale_id>/modifier", views.modifier_filiale, name='modifier_filiale'),
     path("filiale/delete", views.supprimer_filiale, name='supprimer_filiale'),
 
+    path("client/<int:client_id>/liste-documents", GEDClientView.as_view(), name='client_documents'),
     path("client/<int:client_id>/document/add", views.add_document, name='client_add_document'),
     path("document/<int:document_id>/modifier", views.modifier_document, name='modifier_document'),
     path("document/delete", views.supprimer_document, name='supprimer_document'),
 
+    path("client/<int:client_id>/liste-acompte", AcompteClientView.as_view(), name='client_acomptes'),
     path("client/<int:client_id>/acompte/add", views.add_acompte, name='client_add_acompte'),
     path("acompte/<int:acompte_id>/modifier", views.modifier_acompte, name='modifier_acompte'),
     path("acompte/delete", views.supprimer_acompte, name='supprimer_acompte'),

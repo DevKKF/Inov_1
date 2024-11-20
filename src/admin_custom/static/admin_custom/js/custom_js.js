@@ -1112,27 +1112,60 @@ $(document).ready(function () {
 
     });
 
+    // TODO AJOUT DE DOCUMENT DU CLIENT
+    //Ajout document
+    $("#btn_enregistrer_document_client").on('click', function () {
 
+        let btn_enregistrer_document_client = $(this);
 
-    $(document).ready(function () {
-        // Ensure Noty and jQuery are loaded
-        if (typeof $.noty === 'undefined' || typeof $ === 'undefined') {
-            console.error("Noty or jQuery not loaded");
-            return;
+        let formulaire = $('#form_document_client');
+
+        $.validator.setDefaults({ ignore: [] });
+
+        if (formulaire.valid()) {
+
+            $.ajax({
+                type: 'post',
+                url: formulaire.attr('action'),
+                data: $('#form_document_client').serialize(),
+                beforeSend: function () {
+                    $('#loading_gif').show();
+                    btn_enregistrer_document_client.hide();
+                },
+                success: function (response) {
+
+                    $('#loading_gif').hide();
+                    //btn_enregistrer_document_client.hide();
+
+                    if (response.statut == 1) {
+
+                        notifySuccess(response.message, function () {
+                            location.reload();
+                        });
+
+                    } else {
+                        notifyWarning(response.message);
+                    }
+
+                },
+                error: function (response) {
+                    console.log(response);
+                    btn_enregistrer_filiale_client.show();
+                }
+            });
+
+        } else {
+            let validator = formulaire.validate();
+            notifyWarning("Veuillez renseigner tout les champs obligatoire");
         }
 
-        // Event delegation for dynamically added elements
-        $(document).on('click', '.btn_supprimer_document', function () {
-            let document_id = $(this).data('document_id');
-            supprimer_document(document_id);
-        });
     });
 
-
-    function supprimer_document(document_id) {
+    $(document).on('click', '.btn_supprimer_document', function () {
+        let document_id = $(this).data('document_id');
 
         let n = noty({
-            text: 'Voulez-vous vraiment supprimer ce document ?',
+            text: 'Voulez-vous vraiment supprimer cette document ?',
             type: 'warning',
             dismissQueue: true,
             layout: 'center',
@@ -1168,7 +1201,23 @@ $(document).ready(function () {
             ]
         });
 
-    }
+
+    });
+
+
+    $(document).ready(function () {
+        // Ensure Noty and jQuery are loaded
+        if (typeof $.noty === 'undefined' || typeof $ === 'undefined') {
+            console.error("Noty or jQuery not loaded");
+            return;
+        }
+
+        // Event delegation for dynamically added elements
+        $(document).on('click', '.btn_supprimer_document', function () {
+            let document_id = $(this).data('document_id');
+            supprimer_document(document_id);
+        });
+    });
 
 
     $(document).on("click", "#btn_save_document_dossier_sinistre", function () {
@@ -1602,9 +1651,57 @@ $(document).ready(function () {
 
     });
 
+    // TODO AJOUT DE ACOMPTE DU CLIENT
+    //Ajout filiale
+    $("#btn_enregistrer_acompte_client").on('click', function () {
 
+        let btn_enregistrer_acompte_client = $(this);
 
-    function supprimer_acompte(acompte_id) {
+        let formulaire = $('#form_acompte_client');
+
+        $.validator.setDefaults({ ignore: [] });
+
+        if (formulaire.valid()) {
+
+            $.ajax({
+                type: 'post',
+                url: formulaire.attr('action'),
+                data: $('#form_acompte_client').serialize(),
+                beforeSend: function () {
+                    $('#loading_gif').show();
+                    btn_enregistrer_acompte_client.hide();
+                },
+                success: function (response) {
+
+                    $('#loading_gif').hide();
+                    //btn_enregistrer_acompte_client.hide();
+
+                    if (response.statut == 1) {
+
+                        notifySuccess(response.message, function () {
+                            location.reload();
+                        });
+
+                    } else {
+                        notifyWarning(response.message);
+                    }
+
+                },
+                error: function (response) {
+                    console.log(response);
+                    btn_enregistrer_acompte_client.show();
+                }
+            });
+
+        } else {
+            let validator = formulaire.validate();
+            notifyWarning("Veuillez renseigner tout les champs obligatoire");
+        }
+
+    });
+
+    $(document).on('click', '.btn_supprimer_acompte', function () {
+        let acompte_id = $(this).data('acompte_id');
 
         let n = noty({
             text: 'Voulez-vous vraiment supprimer cet acompte ?',
@@ -1643,7 +1740,8 @@ $(document).ready(function () {
             ]
         });
 
-    }
+
+    });
 
     //----------------- FIN AJOUT DE ACOMPTE ------------------//
 
@@ -13404,6 +13502,27 @@ $(document).ready(function () {
     $(document).ready(function () {
         addInputAlphaNumValidation(".alpha_num_input", "error-message");
     });
+});
 
+//Affichage du tableau si réponse apporteur est oui.
+document.addEventListener('DOMContentLoaded', function () {
+    const yesRadio = document.getElementById('yes_apporteur');
+    const noRadio = document.getElementById('no_apporteur');
+    const tableDiv = document.getElementById('test');
 
+    // Initial hide or show based on the default checked radio button
+    tableDiv.style.display = noRadio.checked ? 'none' : 'block';
+
+    // Add event listeners for the radio buttons
+    yesRadio.addEventListener('change', function () {
+        if (this.checked) {
+            tableDiv.style.display = 'block';
+        }
+    });
+
+    noRadio.addEventListener('change', function () {
+        if (this.checked) {
+            tableDiv.style.display = 'none';
+        }
+    });
 });

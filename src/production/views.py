@@ -611,15 +611,38 @@ def supprimer_document(request):
 
 
 def add_acompte(request, client_id):
+    errors = {}
     if request.method == "POST":
 
-        form = AcompteForm(request.POST)
+        montant = request.POST.get('montant')
+        date_versement = request.POST.get('date_versement')
 
-        if form.is_valid():
+        if not montant:
+            response = {
+                'statut': 0,
+                'message': "Veuillez renseigner correctement le formulaire",
+                'errors': errors
+            }
+
+            return JsonResponse(response)
+
+        if not date_versement:
+            response = {
+                'statut': 0,
+                'message': "Veuillez renseigner correctement le formulaire",
+                'errors': errors
+            }
+
+            return JsonResponse(response)
+
+        if not errors:
 
             client_id = request.POST.get('client_id')
 
-            acompte = form.save(commit=False)
+            acompte = Acompte(
+                montant=request.POST.get('montant', '').replace(' ', ''),
+                date_versement=request.POST.get('date_versement', ''),
+            )
             acompte.client = Client.objects.get(id=client_id)
             acompte.save()
 
@@ -2716,6 +2739,8 @@ def police_add_document(request, police_id):
             }
 
             return JsonResponse(response)
+
+
 def aliment_add_document(request, aliment_id):
     if request.method == "POST":
 
@@ -2789,7 +2814,6 @@ class PoliceSinistresView(TemplateView):
             **admin.site.each_context(self.request),
             "opts": self.model._meta,
         }
-
 
 
 def police_sinistres_datatable(request, police_id):
@@ -4476,8 +4500,6 @@ def add_beneficiaire(request, police_id):
                         'polices_du_bureau_actif': polices_du_bureau_actif,'today': today})
 
 
-
-
 def getVehicules(police_id):
     print(police_id)
     vehicules = []
@@ -5410,7 +5432,6 @@ def suspension_beneficiaire(request, police_id, aliment_id):
     return JsonResponse(response)
 
 
-
 #
 def remise_en_vigueur(request, police_id, aliment_id):
     police = Police.objects.get(id=police_id)
@@ -6200,7 +6221,6 @@ def supprimer_client(request):
         return JsonResponse(response)
 
 
-
 #Liste des polices du client
 @method_decorator(login_required, name='dispatch')
 class PoliceClientView(TemplateView):
@@ -6368,7 +6388,7 @@ class ContactClientView(TemplateView):
         }
 
 
-
+#Liste des filiales du client
 @method_decorator(login_required, name='dispatch')
 class FilialeClientView(TemplateView):
     permission_required = "production.view_clients"
@@ -6417,6 +6437,104 @@ class FilialeClientView(TemplateView):
             "opts": self.model._meta,
         }
 
+
+#Liste des acomptes du client
+@method_decorator(login_required, name='dispatch')
+class AcompteClientView(TemplateView):
+    permission_required = "production.view_clients"
+    template_name = 'client/client_acomptes.html'
+    model = Client
+
+    def get(self, request, client_id, *args, **kwargs):
+        context_original = self.get_context_data(**kwargs)
+
+
+        clients = Client.objects.filter(id=client_id, bureau=request.user.bureau)
+        if clients:
+            client = clients.first()
+
+            acomptes = Acompte.objects.filter(client_id=client_id)
+
+            pays = Pays.objects.all().order_by('nom')
+
+            bureaux = Bureau.objects.filter(id=request.user.bureau.id)
+
+            context_perso = {
+                'client': client,
+                'acomptes': acomptes,
+                'pays': pays,
+                'bureaux': bureaux
+            }
+
+            context = {**context_original, **context_perso}
+
+            return self.render_to_response(context)
+
+        else:
+            return redirect("clients")
+
+
+    def post(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+
+        pprint(kwargs)
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }
+
+
+#Liste des documents électronique du client
+@method_decorator(login_required, name='dispatch')
+class GEDClientView(TemplateView):
+    permission_required = "production.view_clients"
+    template_name = 'client/client_documents.html'
+    model = Client
+
+    def get(self, request, client_id, *args, **kwargs):
+        context_original = self.get_context_data(**kwargs)
+
+
+        clients = Client.objects.filter(id=client_id, bureau=request.user.bureau)
+        if clients:
+            client = clients.first()
+
+            pprint(client.pays.devise)
+
+            statut_contrat = "CONTRAT"
+
+            documents = Document.objects.filter(client_id=client_id)
+
+            pays = Pays.objects.all().order_by('nom')
+
+            bureaux = Bureau.objects.filter(id=request.user.bureau.id)
+
+            context_perso = {'client': client, 'documents': documents, 'pays': pays,
+                             'bureaux': bureaux, 'statut_contrat': statut_contrat
+                             }
+
+            context = {**context_original, **context_perso}
+
+            return self.render_to_response(context)
+
+        else:
+            return redirect("clients")
+
+
+    def post(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+
+        pprint(kwargs)
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }
 
 
 
@@ -7231,8 +7349,6 @@ def beneficiaire_carte_html(request):
     return render(request, 'police/courriers/cartes.html', {})
 
 
-
-
 @login_required()
 def export_beneficiaires(request, police_id):
     police = Police.objects.get(id=police_id)
@@ -7308,7 +7424,6 @@ def export_beneficiaires(request, police_id):
 
     else:
         return JsonResponse({"message": "Police non trouvée"}, status=404)
-
 
 
 @login_required()
@@ -7802,7 +7917,6 @@ def prospect_grh_datatable(request):
         "recordsFiltered": paginator.count,
         "draw": int(request.GET.get('draw', 1)),
     })
-
 
 
 # modification d'un bénéficiaire
