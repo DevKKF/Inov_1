@@ -1,4 +1,5 @@
 {% load i18n static jazzmin admin_urls %}
+{% load my_filters %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_jazzmin_settings request as jazzmin_settings %}
@@ -360,7 +361,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'client_details' client.id %}" class="nav-link">
+                <a href="{% url 'police.details' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-user-tag"></i>
                   <p>
                     Fiche de la police
@@ -368,7 +369,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'client_polices' client.id %}" class="nav-link">
+                <a href="{% url 'police_avenants' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-file-contract"></i>
                   <p>
                     Avenants
@@ -376,7 +377,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'client_contacts' client.id %}" class="nav-link">
+                <a href="{% url 'police_formules' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-phone-alt"></i>
                   <p>
                     Formumle de garantie
@@ -384,7 +385,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'client_filiales' client.id %}" class="nav-link">
+                <a href="{% url 'police_ged' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
                   <p>
                     GED
@@ -392,7 +393,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'police_vehicules' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-file-alt"></i>
                   <p>
                     Aliments
@@ -400,7 +401,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'police_quittances' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-funnel-dollar"></i>
                   <p>
                     Quittances
@@ -408,7 +409,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'police_sinistres' police.id %}" class="nav-link">
                   <i class="nav-icon fas fa-funnel-dollar"></i>
                   <p>
                     Sinistres
@@ -502,22 +503,26 @@
   <!-- /.control-sidebar -->
 </div>
 
-<!-- //LES MODALS -->
-{% include 'client/modal_transfert_beneficiaires.html' %}
-{% include 'client/modal_changement_compagnie.html' %}
-{% include 'client/modal_contact.html' %}
-{% include 'client/modal_filiale.html' %}
-{% include 'client/modal_document.html' %}
-{% include 'client/modal_acompte.html' %}
-{% include 'police/modal_police.html' %}
+{% include 'police/modal_picture.html' %}
+{% include 'police/modal_changement_formule.html' %}
+{% include 'police/modal_import_benef.html' %}
+{% include 'police/modal_avenant.html' %}
+{% include 'police/modal_formule.html' %}
+{% include 'police/modal_formule_desactivate.html' %}
+{% if formule %}
+{% include 'police/modal_bareme.html' %}
+{% include 'police/modal_desactiver_bareme.html' %}
+{% endif %}
 
+{% include 'police/modal_vehicule.html' %}
+{% include 'police/modal_import_vehicules.html' %}
+{% include 'police/modal_document.html' %}
+{% include 'police/modal_edition_cartes.html' %}
+{% include 'police/modal_add_tarif_prestataire_client.html' %}
 
 <div id="olea_std_dialog_box"></div>
 
 {% include 'client/modal_dynamique.html' %}
-
-{% include 'police/modal_autres_taxes.html' %}
-{% include 'police/modal_apporteurs.html' %}
 <!-- //FIN DES MODALS -->
 
 <!-- jQuery -->
