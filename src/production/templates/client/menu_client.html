@@ -250,21 +250,11 @@
 
             <!-- changement de bureau pour les superusers -->
             {% if user.is_superuser or user.is_admin_group %}
-            <!--li-- class="nav-item dropdown">
-                <a class="nav-link btn" data-toggle="dropdown" href="#" title="Changer de bureau">
-                     <span class="current_bureau">{{ user.bureau }}  <i class="fas fa-home" aria-hidden="true"></i> </span>
+            <li class="nav-item dropdown">
+                <a class="nav-link btn" data-toggle="dropdown" href="javascript:void(0)" title="Changer de bureau">
+                     <span class="current_bureau">CLIENT : {{ client.nom }} {{ client.prenoms }}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left" style="height:400px;overflow:auto;">
-                    <form action="{% url 'set_bureau' %}" method="post">
-                        {% csrf_token %}
-                        {% for bureau in request.session.bureaux|dictsort:"nom" %}
-                            <button type="submit" name="bureau_id" value="{{ bureau.id }}" class="dropdown-item">
-                                {{ bureau.nom|upper }}
-                            </button>
-                        {% endfor %}
-                    </form>
-                </div>
-            </li-->
+            </li>
             {% endif %}
             <!-- changement de bureau pour les superusers -->
 

@@ -4972,7 +4972,7 @@ $(document).ready(function () {
     //fin champ liés à l'option de calcul de la prime
 
 
-    $("#btn_save_police").on('click', function () {
+    /*$("#btn_save_police").on('click', function () {
         let btn_submit = $(this);
 
         btn_submit.attr('disabled', true);
@@ -5113,7 +5113,101 @@ $(document).ready(function () {
         }
 
 
+    });*/
+
+    $("#btn_save_police").on('click', function () {
+        let btn_submit = $(this);
+
+        btn_submit.attr('disabled', true);
+
+        let formulaire = $('#form_add_police');
+        let href = formulaire.attr('action');
+
+        $.validator.setDefaults({ ignore: [] });
+
+        let formData = new FormData();
+
+        if (formulaire.valid()) {
+
+            // Enregistrement direct sans confirmation
+            let data_serialized = formulaire.serialize();
+            $.each(data_serialized.split('&'), function (index, elem) {
+                let vals = elem.split('=');
+
+                let key = vals[0];
+                let valeur = decodeURIComponent(vals[1].replace(/\+/g, '  '));
+
+                formData.append(key, valeur);
+            });
+
+            // Ajout du fichier logo_partenaire au FormData
+            let logo_partenaire_input = $('#logo_partenaire')[0];
+            let logo_partenaire_file = logo_partenaire_input.files[0];
+
+            formData.append('logo_partenaire', logo_partenaire_file);
+
+            $.ajax({
+                type: 'post',
+                url: href,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+
+                    btn_submit.removeAttr('disabled');
+
+                    if (response.statut == 1) {
+
+                        let police = response.data;
+
+                        // Vider le formulaire
+                        resetFields('#' + formulaire.attr('id'));
+                        resetFields('#form_add_autres_taxes');
+
+                        // Vider les cookies enregistrées pour l'occasion
+                        document.cookie = "taxes=";
+
+                        notifySuccess(response.message, function () {
+                            location.reload();
+                        });
+
+                    } else {
+
+                        let errors = JSON.parse(JSON.stringify(response.errors));
+                        let errors_list_to_display = '';
+                        for (field in errors) {
+                            errors_list_to_display += '- ' + ucfirst(field) + ' : ' + errors[field] + '<br/>';
+                        }
+
+                        $('#modal-police .alert .message').html(errors_list_to_display);
+
+                        $('#modal-police .alert').fadeTo(2000, 500).slideUp(500, function () {
+                            $(this).slideUp(500);
+                        }).removeClass('alert-success').addClass('alert-warning');
+                    }
+                },
+                error: function (request, status, error) {
+                    btn_submit.removeAttr('disabled');
+                    notifyWarning("Erreur lors de l'enregistrement ");
+                }
+            });
+
+        } else {
+            // Validation échouée
+            btn_submit.removeAttr('disabled');
+
+            $('label.error').css({ display: 'none', height: '0px' }).removeClass('error').text('');
+
+            let validator = formulaire.validate();
+
+            $.each(validator.errorMap, function (index, value) {
+                console.log('Id: ' + index + ' Message: ' + value);
+            });
+
+            notifyWarning('Veuillez renseigner tous les champs obligatoires');
+        }
     });
+
 
     //actualiser le taux de commission au changement de la compagnie
     $("#modal-police #branche").on('change', function () {
@@ -5660,7 +5754,7 @@ $(document).ready(function () {
 
     //calculs divers
 
-    $("#modal-police #compagnie, #modal-police #produit").on('change', function () {
+    /*$("#modal-police #compagnie, #modal-police #produit").on('change', function () {
 
         let compagnie_id = $("#modal-police #compagnie").val();
         let produit_id = $('#modal-police #produit').val();
@@ -5688,9 +5782,42 @@ $(document).ready(function () {
         });
 
 
+    });*/
+
+    $("#modal-police #compagnie, #modal-police #produit").on('change', function () {
+
+        let compagnie_id = $("#modal-police #compagnie").val();
+        let produit_id = $('#modal-police #produit').val();
+
+        // Réinitialiser les champs si l'un des sélecteurs est modifié
+        $('#modal-police #taux_com_courtage').val('');
+        $('#modal-police #taux_com_courtage_terme').val('');
+        $('#modal-police #taux_com_gestion').val('');
+
+        if (compagnie_id && produit_id) {
+            $.ajax({
+                type: 'get',
+                url: '/production/compagnie/ajax_infos_compagnie/' + compagnie_id + '/' + produit_id,
+                dataType: 'json',
+                success: function (data) {
+
+                    let taux_com_courtage = parseFloat(data.taux_com_courtage);
+                    let taux_com_courtage_terme = parseFloat(data.taux_com_courtage_terme);
+                    let taux_com_gestion = parseFloat(data.taux_com_gestion);
+
+                    $('#modal-police #taux_com_courtage').val(taux_com_courtage);
+                    $('#modal-police #taux_com_courtage_terme').val(taux_com_courtage_terme);
+                    $('#modal-police #taux_com_gestion').val(taux_com_gestion);
+
+                    calculer_montant_divers_police();
+                },
+                error: function () {
+                    console.log('Erreur de chargement : ajax_infos_compagnie ');
+                }
+            });
+        }
+
     });
-
-
     function calculer_commissions_modification_police() {
 
 
@@ -13509,6 +13636,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const yesRadio = document.getElementById('yes_apporteur');
     const noRadio = document.getElementById('no_apporteur');
     const tableDiv = document.getElementById('test');
+    const tableInputs = tableDiv.querySelectorAll('input, select, textarea');
+    const commissionField = document.getElementById('total_commission_intermediaire');
 
     // Initial hide or show based on the default checked radio button
     tableDiv.style.display = noRadio.checked ? 'none' : 'block';
@@ -13523,6 +13652,20 @@ document.addEventListener('DOMContentLoaded', function () {
     noRadio.addEventListener('change', function () {
         if (this.checked) {
             tableDiv.style.display = 'none';
+
+            // Clear all inputs inside the table
+            tableInputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+
+            // Reset the total commission field
+            if (commissionField) {
+                commissionField.value = '0';
+            }
         }
     });
 });
